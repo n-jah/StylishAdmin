@@ -52,7 +52,10 @@ dependencies {
     implementation(libs.androidx.annotation)
     implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
-//    implementation(libs.mediation.test.suite)
+
+    //glide
+    implementation(libs.glide)  // Latest Glide version
+    annotationProcessor (libs.compiler)  // For annotation processing
 
 
     testImplementation(libs.junit)

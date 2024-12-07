@@ -11,8 +11,7 @@ data class Item(
     val description: String = "",
     val id: String = "",
     val rating: Double = 0.0,
-    val brand: String = "",
-    var isFavorite: Boolean = false
+    val brand: String = ""
 ) : Parcelable {
 
     constructor(parcel: Parcel) : this(
@@ -23,9 +22,7 @@ data class Item(
         description = parcel.readString() ?: "",
         id = parcel.readString() ?: "",
         rating = parcel.readDouble(),
-        brand = parcel.readString() ?: "",
-        isFavorite = parcel.readByte() != 0.toByte()
-    )
+        brand = parcel.readString() ?: "")
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(title)
@@ -36,7 +33,6 @@ data class Item(
         parcel.writeString(id)
         parcel.writeDouble(rating)
         parcel.writeString(brand)
-        parcel.writeByte(if (isFavorite) 1 else 0)
     }
 
     override fun describeContents(): Int = 0

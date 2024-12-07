@@ -11,7 +11,7 @@ class  UserRepoImp: UserRepoInterface {
     private val usersRef = db.getReference("users")
     private val auth = FirebaseAuth.getInstance()
     override suspend fun getUser(userId: String): Result<User> {
-         val userRef = usersRef.child(userId)
+        val userRef = usersRef.child(userId)
         try {
 
             val snapshot = userRef.get().await()
@@ -19,7 +19,7 @@ class  UserRepoImp: UserRepoInterface {
                 val user = snapshot.getValue(User::class.java)
                 return Result.success(user) as Result<User>
 
-            }else{
+            } else {
                 return Result.failure(Exception("User not found"))
             }
         } catch (e: Exception) {
