@@ -1,8 +1,6 @@
     package com.example.stylishadmin.view
 
-    import android.content.Intent
     import android.os.Bundle
-    import android.util.Log
     import android.view.View
     import android.widget.Toast
     import androidx.activity.enableEdgeToEdge
@@ -11,30 +9,14 @@
     import androidx.core.view.ViewCompat
     import androidx.core.view.WindowInsetsCompat
     import androidx.lifecycle.ViewModelProvider
-    import androidx.lifecycle.lifecycleScope
+    import androidx.recyclerview.widget.LinearLayoutManager
     import com.example.stylishadmin.R
+    import com.example.stylishadmin.adapter.testImageAdapter
     import com.example.stylishadmin.databinding.ActivityMainBinding
-    import com.example.stylishadmin.model.items.BRANDS
-    import com.example.stylishadmin.model.items.Item
-    import com.example.stylishadmin.model.items.Size
-    import com.example.stylishadmin.model.user.User
     import com.example.stylishadmin.repository.items.ItemsRepoImp
     import com.example.stylishadmin.repository.items.ItemsRepositoryInterface
-    import com.example.stylishadmin.repository.orders.OrdersRepoImp
-    import com.example.stylishadmin.repository.orders.OrdersRepositoryInterface
-    import com.example.stylishadmin.repository.users.UserRepoImp
-    import com.example.stylishadmin.repository.users.UserRepoInterface
     import com.example.stylishadmin.viewModel.items.ItemsViewModel
     import com.example.stylishadmin.viewModel.items.ItemsViewModelFactory
-    import com.example.stylishadmin.viewModel.orders.OrdersViewModel
-    import com.example.stylishadmin.viewModel.orders.OrdersViewModelFactory
-    import com.example.stylishadmin.viewModel.users.UserViewModelFactory
-    import com.example.stylishadmin.viewModel.users.UsersViewModel
-    import com.google.firebase.Firebase
-    import com.google.firebase.auth.FirebaseAuth
-    import kotlinx.coroutines.launch
-    import kotlinx.coroutines.runBlocking
-    import kotlinx.coroutines.tasks.await
 
     class MainActivity : AppCompatActivity() {
         private lateinit var binding: ActivityMainBinding
@@ -56,29 +38,14 @@
             val viewModelFacotry = ItemsViewModelFactory(itemsRepository)
             viewModel = ViewModelProvider(this, viewModelFacotry)[ItemsViewModel::class.java]
 
-            val newItem = Item("newItem",999.9, arrayListOf("https://th.bing.com/th/id/OIP.qWDIzrk3j2HDpBNP7kBa9wHaEK?rs=1&pid=ImgDetMain"),
-                listOf(Size("ahmed",9),Size("mohamed",9)),"this my new item I added","",9.9,
-                BRANDS.PUMA.toString().lowercase()
-            )
+
+
+            setUpRv()
 
             binding.button.setOnClickListener {
-//             viewModel.addItemsToOnlineDB(newItem){
-//                 message ->
-//                 Toast.makeText(this,message.toString(), Toast.LENGTH_LONG).show()
-//             }
-
-
-                getImagesofItems(2)
-        //        pickImageFromGallery()
-                viewModel.getItems()
+                pickImageFromGallery()
 
             }
-
-            //get orders
-            viewModel.items.observe(this){
-                binding.tv.text = it?.first().toString()
-            }
-
 
             viewModel.loading.observe(this){
                 binding.loadingbar.visibility = if (it) View.VISIBLE else View.GONE
@@ -90,27 +57,35 @@
 
         }
 
+        private fun setUpRv() {
+            binding.rv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+            binding.rv.adapter = testImageAdapter(emptyList())
+            binding.rv.setHasFixedSize(true)
+
+        }
+
         private fun getImagesofItems(itemId: String) {
-            viewModel.getImagesUrlsOfItem(itemId){
-                result ->
-
-
+            viewModel.getItem(itemId)
+            viewModel.item.observe(this){
+                if (it != null){
+                    binding.rv.adapter = testImageAdapter(it.imgUrl)
+                }
             }
         }
 
         private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.OpenMultipleDocuments()) { uris ->
             if (uris.isNotEmpty()) {
                 val selectedUris = uris.map { it.toString() }
-                // Now you can upload all the selected images
-                viewModel.uploadImagesBackWithUrls(selectedUris, "1") { result ->
-                    if (result.isSuccess) {
-                        val uploadedImageUrls = result.getOrNull()
-
-                        // Handle the uploaded image URLs as needed
+                viewModel.uploadImagesAndPutUrlsInRemoteStorage(selectedUris,"2"){
+                    result ->
+                    if (result.isSuccess){
+                        getImagesofItems("2")
                         Toast.makeText(this, "Images uploaded successfully", Toast.LENGTH_LONG).show()
-                    } else {
+                    }
+                    else{
                         Toast.makeText(this, "Failed to upload images: ${result.exceptionOrNull()}", Toast.LENGTH_LONG).show()
                     }
+
                 }
             } else {
                 Toast.makeText(this, "Image selection cancelled or no images selected", Toast.LENGTH_SHORT).show()

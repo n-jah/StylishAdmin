@@ -1,4 +1,4 @@
-package com.example.stylishadmin.model.items
+package com.example.stylishadmin.model.brands
 
 data class Brand(
     val brandName: String = "",

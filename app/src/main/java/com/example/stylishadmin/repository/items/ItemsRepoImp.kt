@@ -116,6 +116,20 @@ class ItemsRepoImp : ItemsRepositoryInterface {
         }
     }
 
+    override suspend fun putItemImagesURLsInRemoteStorage(
+        imageUrls: List<String>,
+        itemId: String
+    ): Result<Boolean> {
+        return try {
+            val itemRef = itemsRef.child(itemId)
+            itemRef.child("imgUrl").setValue(imageUrls).await()
+            Result.success(true)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+
     override suspend fun getImagesOfItemFromRemoteStorage(itemId: String): Result<List<String>> {
         val firebaseStorage = Firebase.storage
         val storageRef = firebaseStorage.reference
@@ -131,4 +145,6 @@ class ItemsRepoImp : ItemsRepositoryInterface {
             Result.failure(e)
         }
     }
+
+
 }

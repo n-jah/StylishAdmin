@@ -229,5 +229,59 @@ class ItemsViewModel(private val itemsRep: ItemsRepositoryInterface): ViewModel(
         }
     }
 
+    //put urls of image to certin item in remote realtime db
+    fun putImagesUrlsInRemoteStorage(imageUrls: List<String>, itemId: String, onResult: (Result<String>) -> Unit) {
+        _loading.value = true
+
+        viewModelScope.launch {
+            try {
+                val result = itemsRep.putItemImagesURLsInRemoteStorage(imageUrls, itemId)
+                if (result.isSuccess) {
+                    _loading.postValue(false)
+                    onResult(Result.success("Image URLs Added"))
+                } else {
+                    _loading.postValue(false)
+                    onResult(Result.failure(Exception("Failed to put image URLs")))
+
+                }
+            } catch (e: Exception) {
+                _loading.postValue(false)
+                onResult(Result.failure(e))
+            } finally {
+                _loading.postValue(false)
+
+            }
+        }
+    }
+
+    //one function to upload to firebase Storage and store urls to realtime db
+    fun uploadImagesAndPutUrlsInRemoteStorage(imageUris: List<String>, itemId: String, onResult: (Result<String>) -> Unit) {
+        _loading.value = true
+        viewModelScope.launch {
+            try {
+                val uploadResult = itemsRep.uploadImagesOfItemBackWithUrls(imageUris, itemId)
+                if (uploadResult.isSuccess) {
+                    val imageUrls = uploadResult.getOrNull() ?: emptyList()
+                    val putResult = itemsRep.putItemImagesURLsInRemoteStorage(imageUrls, itemId)
+                    if (putResult.isSuccess) {
+                        _loading.postValue(false)
+                        onResult(Result.success("Images uploaded and URLs stored successfully"))
+                    } else {
+                        _loading.postValue(false)
+                        onResult(Result.failure(Exception("Failed to store image URLs")))
+                    }
+                }else{
+                    _loading.postValue(false)
+                    onResult(Result.failure(Exception("Failed to upload images to storage")))
+                }
+
+            }catch (e: Exception) {
+                _loading.postValue(false)
+                onResult(Result.failure(e))
+            }finally {
+                _loading.postValue(false)
+            }
+        }
+    }
 
 }

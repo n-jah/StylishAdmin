@@ -1,4 +1,4 @@
-package com.example.stylishadmin.model.items
+package com.example.stylishadmin.model.brands
 
 enum class BRANDS {
     ADIDAS,
