@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/dashboardFragment"
+        android:icon="@drawable/outline_dashboard_24"
+        android:title="Dashboard"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/ordersFragment"
+        android:icon="@drawable/order_icon"
+        android:title="Orders"
+        app:showAsAction="ifRoom" />
+
+</menu>

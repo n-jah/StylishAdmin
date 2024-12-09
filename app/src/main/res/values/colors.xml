@@ -15,6 +15,8 @@
     <color name="field_color_dark">#222E34</color>
 
 
+    <color name="card_background">#F8F9FA</color>
+
     <!-- Miscellaneous -->
     <color name="black_overlay">#66000000</color>
     <color name="facebook_color">#3b5998</color>
