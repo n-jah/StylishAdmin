@@ -12,5 +12,11 @@
         android:icon="@drawable/order_icon"
         android:title="Orders"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/myStoreFragment"
+        android:icon="@drawable/total_products"
+        android:title="My Store"
+        app:showAsAction="ifRoom" />
+
 
 </menu>

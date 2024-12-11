@@ -16,13 +16,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         enableEdgeToEdge()
         binding.bottomNavigationView.post {
             val navController = findNavController(R.id.nav_host_fragment)
             binding.bottomNavigationView.setupWithNavController(navController)
         }
 
-    }
 
+    }
 }

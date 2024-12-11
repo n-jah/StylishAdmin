@@ -10,5 +10,9 @@
         android:id="@+id/ordersFragment"
         android:name="com.example.stylishadmin.view.OrdersFragment"
         android:label="Orders" />
+    <fragment
+        android:id="@+id/myStoreFragment"
+        android:name="com.example.stylishadmin.view.StoreFragment"
+        android:label="My Store" />
 
 </navigation>

@@ -17,4 +17,6 @@
     <string name="total_price">Total price</string>
     <string name="order_1234">Order #1234</string>
     <string name="total_price_value">100$</string>
+    <string name="adidas">Adidas</string>
+    <string name="manage_brands">Manage Brands</string>
 </resources>
