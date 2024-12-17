@@ -5,22 +5,27 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
+import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.stylishadmin.R
 import com.example.stylishadmin.adapter.BrandsAdapter
+import com.example.stylishadmin.adapter.ItemsAdapter
 import com.example.stylishadmin.databinding.FragmentStoreBinding
 import com.example.stylishadmin.model.brands.Brand
+import com.example.stylishadmin.model.items.Item
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
 class StoreFragment : Fragment() {
 
-    private lateinit var brandRecyclerView : RecyclerView
-    private lateinit var itemsRecyclerView: RecyclerView
+
     private lateinit var brandsAdapter : BrandsAdapter
+    private lateinit var itemsAdapter: ItemsAdapter
 
     private var _binding: FragmentStoreBinding? = null
     private val binding get() = _binding!!
@@ -37,10 +42,57 @@ class StoreFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+        //setupUI
+        setUpUI()
+
+    }
+
+    private fun setUpUI() {
+
+        // search
+        setUpSearch()
+
         setupRecyclerView()
         // Simulate data loading @TODO replace with the real data
         simulateDataLoading()
 
+
+    }
+
+    private fun setUpSearch() {
+        binding.productSearchBar.setOnQueryTextListener(object  : androidx.appcompat.widget.SearchView.OnQueryTextListener,
+            SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                query?.let {
+                    filterProducts(it)
+                }
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+
+                newText?.let {
+                    filterProducts(it)
+                }
+                return true
+
+            }
+
+        })
+
+
+
+    }
+
+    private fun filterProducts(quary: String) {
+
+
+        val filteredList = itemsAdapter.itemList.filter {
+            it.title.contains(quary, ignoreCase = true)
+        }
+
+        itemsAdapter.updateItems(filteredList)
 
     }
 
@@ -53,6 +105,17 @@ class StoreFragment : Fragment() {
             requireContext(), LinearLayoutManager.HORIZONTAL, false
         )
         binding.brandsRecyclerView.adapter = brandsAdapter
+
+
+        // items
+        itemsAdapter = ItemsAdapter(emptyList(), true) { item ->
+            // Handle item selection
+            println("Selected Item: ${item.title}")
+            Toast.makeText(requireContext(), "Item Clicked ${item.title}", Toast.LENGTH_SHORT).show()
+        }
+        binding.productsRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
+        binding.productsRecyclerView.adapter = itemsAdapter
+
 
     }
 
@@ -73,6 +136,29 @@ class StoreFragment : Fragment() {
             delay(1000) // Delay for shimmer
             brandsAdapter.setLoadingState(false)
             brandsAdapter.updateBrands(fakeList)
+        }
+
+        val fakeProductList = listOf(
+            Item("Nike techear",51.15,  arrayListOf("https://firebasestorage.googleapis.com/v0/b/stylish-dc0d1.appspot.com" +
+                    "/o/2024-08-24%2006-22-09.png?alt=media&token=5e2e3e50-bac4-4192-8ddc-34865d35d9a5"),
+                emptyList(),"asdlfsdlkf", "3",33.3,"Nike"),            Item("Nike techear",51.15,  arrayListOf("https://firebasestorage.googleapis.com/v0/b/stylish-dc0d1.appspot.com" +
+                    "/o/2024-08-24%2006-22-09.png?alt=media&token=5e2e3e50-bac4-4192-8ddc-34865d35d9a5"),
+                emptyList(),"asdlfsdlkf", "3",33.3,"Nike"),            Item("Nike techear",51.15,  arrayListOf("https://firebasestorage.googleapis.com/v0/b/stylish-dc0d1.appspot.com" +
+                    "/o/2024-08-24%2006-22-09.png?alt=media&token=5e2e3e50-bac4-4192-8ddc-34865d35d9a5"),
+                emptyList(),"asdlfsdlkf", "3",33.3,"Nike"),            Item("Nike techear",51.15,  arrayListOf("https://firebasestorage.googleapis.com/v0/b/stylish-dc0d1.appspot.com" +
+                    "/o/2024-08-24%2006-22-09.png?alt=media&token=5e2e3e50-bac4-4192-8ddc-34865d35d9a5"),
+                emptyList(),"asdlfsdlkf", "3",33.3,"Nike"),            Item("Nike techear",51.15,  arrayListOf("https://firebasestorage.googleapis.com/v0/b/stylish-dc0d1.appspot.com" +
+                    "/o/2024-08-24%2006-22-09.png?alt=media&token=5e2e3e50-bac4-4192-8ddc-34865d35d9a5"),
+                emptyList(),"asdlfsdlkf", "3",33.3,"Nike"),
+
+
+        )
+        itemsAdapter.updateItems(fakeProductList)
+
+        lifecycleScope.launch {
+            delay(500)
+            itemsAdapter.setLoadingState(false)
+            itemsAdapter.updateItems(fakeProductList)
         }
     }
 

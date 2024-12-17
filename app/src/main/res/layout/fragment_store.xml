@@ -42,14 +42,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/brandsRecyclerView" />
     <SearchView
-
+        android:searchHintIcon="@drawable/ic_search"
         android:id="@+id/productSearchBar"
         android:layout_width="0dp"
+        android:queryHint="nike.."
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/productsLabel" />
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/productsRecyclerView"

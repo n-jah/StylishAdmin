@@ -63,11 +63,12 @@ dependencies {
     //animation
     implementation (libs.android.lottie)
 
-    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    implementation (libs.mpandroidchart)
 
     //shimmer
     implementation(libs.shimmer)
 
+    implementation ("com.github.creageek:segmented:1.0.0")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

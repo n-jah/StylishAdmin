@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -83,7 +84,9 @@ class BrandsAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (getItemViewType(position)) {
             VIEW_TYPE_ITEM -> {
-                val brand = brandList[position - 1] // Adjust for "Manage Brands"
+                val adjustedPosition = position - 1
+                if (adjustedPosition < 0 || adjustedPosition >= brandList.size) return
+                val brand = brandList[adjustedPosition]
                 val brandViewHolder = holder as BrandViewHolder
                 brandViewHolder.brandName.text = brand.brandName
 
@@ -99,9 +102,17 @@ class BrandsAdapter(
                     if (position == selectedPosition) R.drawable.selected_item_background
                     else R.drawable.default_item_background
                 )
+
             }
             VIEW_TYPE_MANAGEMENT -> {
-                // No specific data binding needed for "Manage Brands"
+                val manageBrandsViewHolder = holder as ManageBrandsViewHolder
+                holder.itemView.setOnClickListener {
+                    Toast.makeText(holder.itemView.context, "Manage Brands Clicked", Toast.LENGTH_SHORT).show()
+                }
+                holder.itemView.setBackgroundResource(
+                    R.drawable.default_item_background
+                )
+
             }
             VIEW_TYPE_SHIMMER -> {
                 val shimmerViewHolder = holder as ShimmerViewHolder
@@ -123,12 +134,24 @@ class BrandsAdapter(
         return if (isLoading) 5 // Number of shimmer placeholders
         else brandList.size + 1 // Add 1 for the "Manage Brands" button
     }
-
-    // Update the adapter's data
     fun updateBrands(newBrandList: List<Brand>) {
         this.brandList = newBrandList
+
+        // Find "All" and set its position as selected
+        val allIndex = brandList.indexOfFirst { it.brandName.equals("All", ignoreCase = true) }
+        selectedPosition = if (allIndex != -1) allIndex + 1 // Adjust for "Manage Brands" item
+        else if (brandList.isNotEmpty()) 1 // Default to the second item
+        else RecyclerView.NO_POSITION
+
         notifyDataSetChanged()
+
+        // Trigger onBrandSelected if "All" exists
+        if (allIndex != -1) {
+            onBrandSelected(brandList[allIndex])
+        }
     }
+
+
 
     fun setLoadingState(loading: Boolean) {
         this.isLoading = loading

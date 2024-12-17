@@ -10,5 +10,5 @@ data class Order(
     val date: String = "",                              // Default to an empty string
     val totalPrice: String = "",                        // Default to an empty string
     val address: UserAddress = UserAddress(),           // Default to a blank UserAddress object
-    val status: String = "pending"                      // Default to "pending""              // Default value
+    var status: String = "pending"                      // Default to "pending""              // Default value
 )

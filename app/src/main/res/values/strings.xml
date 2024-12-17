@@ -19,4 +19,12 @@
     <string name="total_price_value">100$</string>
     <string name="adidas">Adidas</string>
     <string name="manage_brands">Manage Brands</string>
+    <string name="address">43, Electronics City Phase 1, \nElectronic City\n</string>
+    <string name="item_in_order_name">items</string>
+    <string-array name="segmented_items">
+        <item>Option 1</item>
+        <item>Option 2</item>
+        <item>Option 3</item>
+    </string-array>
+
 </resources>
