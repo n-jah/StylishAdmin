@@ -1,16 +1,15 @@
 package com.example.stylishadmin.view
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
-import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.stylishadmin.R
 import com.example.stylishadmin.adapter.BrandsAdapter
 import com.example.stylishadmin.adapter.ItemsAdapter
@@ -24,7 +23,7 @@ import kotlinx.coroutines.launch
 class StoreFragment : Fragment() {
 
 
-    private lateinit var brandsAdapter : BrandsAdapter
+    private lateinit var brandsAdapter: BrandsAdapter
     private lateinit var itemsAdapter: ItemsAdapter
 
     private var _binding: FragmentStoreBinding? = null
@@ -33,7 +32,7 @@ class StoreFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentStoreBinding.inflate(inflater , container, false)
+        _binding = FragmentStoreBinding.inflate(inflater, container, false)
         // Inflate the layout for this fragment
         return binding.root
     }
@@ -41,7 +40,6 @@ class StoreFragment : Fragment() {
     //onViewCreate
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
 
         //setupUI
         setUpUI()
@@ -57,11 +55,18 @@ class StoreFragment : Fragment() {
         // Simulate data loading @TODO replace with the real data
         simulateDataLoading()
 
+        // nav to add item fragment
+        binding.addProductFAB.setOnClickListener {
+            val navController = findNavController()
+            navController.navigate(R.id.action_myStoreFragment_to_addItemFragment)
+        }
+
 
     }
 
     private fun setUpSearch() {
-        binding.productSearchBar.setOnQueryTextListener(object  : androidx.appcompat.widget.SearchView.OnQueryTextListener,
+        binding.productSearchBar.setOnQueryTextListener(object :
+            androidx.appcompat.widget.SearchView.OnQueryTextListener,
             SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.let {
@@ -80,7 +85,6 @@ class StoreFragment : Fragment() {
             }
 
         })
-
 
 
     }
@@ -109,9 +113,10 @@ class StoreFragment : Fragment() {
 
         // items
         itemsAdapter = ItemsAdapter(emptyList(), true) { item ->
-            // Handle item selection
-            println("Selected Item: ${item.title}")
-            Toast.makeText(requireContext(), "Item Clicked ${item.title}", Toast.LENGTH_SHORT).show()
+
+            val action = StoreFragmentDirections.actionMyStoreFragmentToEditItemFragment(item)
+            findNavController().navigate(action)
+
         }
         binding.productsRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.productsRecyclerView.adapter = itemsAdapter
@@ -121,13 +126,19 @@ class StoreFragment : Fragment() {
 
     private fun simulateDataLoading() {
         val fakeList = listOf(
-            Brand("All", "https://firebasestorage.googleapis.com/v0/b/stylish-dc0d1.appspot.com" +
-                    "/o/2024-08-24%2006-22-09.png?alt=media&token=5e2e3e50-bac4-4192-8ddc-34865d35d9a5"),
-            Brand("Nike",
-            "https://firebasestorage.googleapis.com/v0/b/stylish-dc0d1.appspot.com" +
-                    "/o/2024-08-24%2006-22-09.png?alt=media&token=5e2e3e50-bac4-4192-8ddc-34865d35d9a5") ,
-            Brand("Adidas","https://firebasestorage.googleapis.com/v0/b/stylish-dc0d1.appspot.com" +
-                    "/o/2024-08-24%2006-22-09.png?alt=media&token=5e2e3e50-bac4-4192-8ddc-34865d35d9a5",
+            Brand(
+                "All", "https://firebasestorage.googleapis.com/v0/b/stylish-dc0d1.appspot.com" +
+                        "/o/2024-08-24%2006-22-09.png?alt=media&token=5e2e3e50-bac4-4192-8ddc-34865d35d9a5"
+            ),
+            Brand(
+                "Nike",
+                "https://firebasestorage.googleapis.com/v0/b/stylish-dc0d1.appspot.com" +
+                        "/o/2024-08-24%2006-22-09.png?alt=media&token=5e2e3e50-bac4-4192-8ddc-34865d35d9a5"
+            ),
+            Brand(
+                "Adidas",
+                "https://firebasestorage.googleapis.com/v0/b/stylish-dc0d1.appspot.com" +
+                        "/o/2024-08-24%2006-22-09.png?alt=media&token=5e2e3e50-bac4-4192-8ddc-34865d35d9a5",
             )
         )
         brandsAdapter.updateBrands(fakeList)
@@ -139,20 +150,44 @@ class StoreFragment : Fragment() {
         }
 
         val fakeProductList = listOf(
-            Item("Nike techear",51.15,  arrayListOf("https://firebasestorage.googleapis.com/v0/b/stylish-dc0d1.appspot.com" +
-                    "/o/2024-08-24%2006-22-09.png?alt=media&token=5e2e3e50-bac4-4192-8ddc-34865d35d9a5"),
-                emptyList(),"asdlfsdlkf", "3",33.3,"Nike"),            Item("Nike techear",51.15,  arrayListOf("https://firebasestorage.googleapis.com/v0/b/stylish-dc0d1.appspot.com" +
-                    "/o/2024-08-24%2006-22-09.png?alt=media&token=5e2e3e50-bac4-4192-8ddc-34865d35d9a5"),
-                emptyList(),"asdlfsdlkf", "3",33.3,"Nike"),            Item("Nike techear",51.15,  arrayListOf("https://firebasestorage.googleapis.com/v0/b/stylish-dc0d1.appspot.com" +
-                    "/o/2024-08-24%2006-22-09.png?alt=media&token=5e2e3e50-bac4-4192-8ddc-34865d35d9a5"),
-                emptyList(),"asdlfsdlkf", "3",33.3,"Nike"),            Item("Nike techear",51.15,  arrayListOf("https://firebasestorage.googleapis.com/v0/b/stylish-dc0d1.appspot.com" +
-                    "/o/2024-08-24%2006-22-09.png?alt=media&token=5e2e3e50-bac4-4192-8ddc-34865d35d9a5"),
-                emptyList(),"asdlfsdlkf", "3",33.3,"Nike"),            Item("Nike techear",51.15,  arrayListOf("https://firebasestorage.googleapis.com/v0/b/stylish-dc0d1.appspot.com" +
-                    "/o/2024-08-24%2006-22-09.png?alt=media&token=5e2e3e50-bac4-4192-8ddc-34865d35d9a5"),
-                emptyList(),"asdlfsdlkf", "3",33.3,"Nike"),
+            Item(
+                "Nike techear", 51.15, arrayListOf(
+                    "https://firebasestorage.googleapis.com/v0/b/stylish-dc0d1.appspot.com" +
+                            "/o/2024-08-24%2006-22-09.png?alt=media&token=5e2e3e50-bac4-4192-8ddc-34865d35d9a5"
+                ),
+                emptyList(), "asdlfsdlkf", "3", 33.3, "Nike"
+            ),
+            Item(
+                "Nike techear", 51.15, arrayListOf(
+                    "https://firebasestorage.googleapis.com/v0/b/stylish-dc0d1.appspot.com" +
+                            "/o/2024-08-24%2006-22-09.png?alt=media&token=5e2e3e50-bac4-4192-8ddc-34865d35d9a5"
+                ),
+                emptyList(), "asdlfsdlkf", "3", 33.3, "Nike"
+            ),
+            Item(
+                "Nike techear", 51.15, arrayListOf(
+                    "https://firebasestorage.googleapis.com/v0/b/stylish-dc0d1.appspot.com" +
+                            "/o/2024-08-24%2006-22-09.png?alt=media&token=5e2e3e50-bac4-4192-8ddc-34865d35d9a5"
+                ),
+                emptyList(), "asdlfsdlkf", "3", 33.3, "Nike"
+            ),
+            Item(
+                "Nike techear", 51.15, arrayListOf(
+                    "https://firebasestorage.googleapis.com/v0/b/stylish-dc0d1.appspot.com" +
+                            "/o/2024-08-24%2006-22-09.png?alt=media&token=5e2e3e50-bac4-4192-8ddc-34865d35d9a5"
+                ),
+                emptyList(), "asdlfsdlkf", "3", 33.3, "Nike"
+            ),
+            Item(
+                "Nike techear", 51.15, arrayListOf(
+                    "https://firebasestorage.googleapis.com/v0/b/stylish-dc0d1.appspot.com" +
+                            "/o/2024-08-24%2006-22-09.png?alt=media&token=5e2e3e50-bac4-4192-8ddc-34865d35d9a5"
+                ),
+                emptyList(), "asdlfsdlkf", "3", 33.3, "Nike"
+            ),
 
 
-        )
+            )
         itemsAdapter.updateItems(fakeProductList)
 
         lifecycleScope.launch {

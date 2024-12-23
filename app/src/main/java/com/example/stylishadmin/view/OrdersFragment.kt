@@ -93,7 +93,6 @@ class OrdersFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-
     ): View {
         _binding = FragmentOrdersBinding.inflate(inflater, container, false)
         return binding.root
@@ -101,8 +100,8 @@ class OrdersFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setUpUI()
+
 
     }
 

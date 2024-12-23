@@ -4,16 +4,20 @@ pluginManagement {
             content {
                 includeGroupByRegex("com\\.android.*")
                 includeGroupByRegex("com\\.google.*")
-
                 includeGroupByRegex("androidx.*")
-
             }
         }
         mavenCentral()
         maven { url = uri("https://jitpack.io") }
         gradlePluginPortal()
     }
+
+    // Declare Safe Args plugin
+    plugins {
+        id("androidx.navigation.safeargs.kotlin") version "2.8.5" // Use latest version of Navigation
+    }
 }
+
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
@@ -25,4 +29,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "StylishAdmin"
 include(":app")
- 

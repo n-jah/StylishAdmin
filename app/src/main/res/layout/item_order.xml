@@ -99,16 +99,6 @@
                 android:weightSum="4"
                 android:orientation="horizontal">
 
-
-                <TextView
-                    android:layout_weight="1"
-                    android:id="@+id/order_status"
-                    android:layout_width="wrap_content"
-                    android:visibility="gone"
-                    android:layout_height="wrap_content"
-                    android:text="Status: Pending"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
-
                 <com.google.android.material.button.MaterialButtonToggleGroup
                     android:id="@+id/materialButtonToggleGroup"
                     android:layout_width="match_parent"
@@ -131,19 +121,9 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="On Delivery"
-
                         style="@style/CustomOnDeliveryButton" />
                 </com.google.android.material.button.MaterialButtonToggleGroup>
 
-                <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/order_status_switch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:visibility="gone"
-                    android:layout_weight="3"
-                    android:textOff="Pending"
-                    android:textOn="On Delivery" />
             </LinearLayout>
         </LinearLayout>
 

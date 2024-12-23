@@ -21,14 +21,17 @@ lifecycleViewmodelKtx = "2.8.7"
 materialVersion = "1.9.0"
 mediationTestSuite = "3.0.0"
 mpandroidchart = "v3.1.0"
+navigationSafeArgsGradlePlugin = "2.8.5"
 navigationUiKtx = "2.8.4"
 segmentedbutton = "Tag"
 shimmer = "0.5.0"
+core = "1.15.0"
 
 [libraries]
 android-lottie = { module = "com.airbnb.android:lottie", version.ref = "lottieVersion" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-navigation-fragment-ktx = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigationUiKtx" }
+androidx-navigation-safe-args-gradle-plugin = { module = "androidx.navigation:navigation-safe-args-gradle-plugin", version.ref = "navigationSafeArgsGradlePlugin" }
 androidx-navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigationUiKtx" }
 compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glide" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
@@ -50,6 +53,7 @@ mediation-test-suite = { group = "com.google.android.ads", name = "mediation-tes
 mpandroidchart = { module = "com.github.PhilJay:MPAndroidChart", version.ref = "mpandroidchart" }
 segmentedbutton = { module = "com.github.addisonElliott:SegmentedButton", version.ref = "segmentedbutton" }
 shimmer = { module = "com.facebook.shimmer:shimmer", version.ref = "shimmer" }
+androidx-core = { group = "androidx.core", name = "core", version.ref = "core" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

@@ -5,7 +5,7 @@ import android.os.Parcelable
 
 data class Size(
     val size: String = "",
-    val stock: Int = 0
+    var stock: Int = 0
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString() ?: "",

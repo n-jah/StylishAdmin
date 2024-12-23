@@ -21,6 +21,10 @@
     <string name="manage_brands">Manage Brands</string>
     <string name="address">43, Electronics City Phase 1, \nElectronic City\n</string>
     <string name="item_in_order_name">items</string>
+    <string name="men_s_print">"Men\\'s Printed Pullover Hoodie   "</string>
+    <string name="add_to_items">Add to items</string>
+    <string name="sizes_stock"><![CDATA[Sizes & Stock]]></string>
+    <string name="enter_the_name">Enter the name</string>
     <string-array name="segmented_items">
         <item>Option 1</item>
         <item>Option 2</item>

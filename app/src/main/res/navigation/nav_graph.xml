@@ -13,6 +13,29 @@
     <fragment
         android:id="@+id/myStoreFragment"
         android:name="com.example.stylishadmin.view.StoreFragment"
-        android:label="My Store" />
+        android:label="My Store" >
+        <action
+            android:id="@+id/action_myStoreFragment_to_addItemFragment"
+            app:destination="@id/addItemFragment" />
+        <action
+            android:id="@+id/action_myStoreFragment_to_editItemFragment"
+            app:destination="@id/editItemFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addItemFragment"
+        android:name="com.example.stylishadmin.view.NewItemFragment"
+        android:label="Add Item"
+
+        />
+    <fragment
+        android:id="@+id/editItemFragment"
+        android:name="com.example.stylishadmin.view.EditItemFragment">
+    <argument
+        android:name="itemData"
+        app:argType="com.example.stylishadmin.model.items.Item" />
+    </fragment>
+
+
+
 
 </navigation>

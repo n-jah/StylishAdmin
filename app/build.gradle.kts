@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.google.gms.google.services)
+    id("androidx.navigation.safeargs.kotlin")
+
 }
 
 android {
@@ -55,9 +57,9 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation (libs.androidx.navigation.fragment.ktx)
     implementation (libs.androidx.navigation.ui.ktx)
-
     //glide
-    implementation(libs.glide)  // Latest Glide version
+    implementation(libs.glide)
+    implementation(libs.androidx.core)  // Latest Glide version
     annotationProcessor (libs.compiler)  // For annotation processing
 
     //animation
@@ -67,8 +69,6 @@ dependencies {
 
     //shimmer
     implementation(libs.shimmer)
-
-    implementation ("com.github.creageek:segmented:1.0.0")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

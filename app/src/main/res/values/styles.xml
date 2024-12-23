@@ -68,25 +68,33 @@
 
     <!-- Style for the Pending button -->
     <style name="CustomPendingButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
-        <item name="strokeColor">@android:color/holo_red_dark</item>
+        <item name="backgroundTint">@drawable/pending_button_background</item>
+        <item name="android:textColor">@color/pending_text_color</item>
+        <item name="strokeColor">#CF180A</item>
         <item name="strokeWidth">2dp</item>
-        <item name="fontFamily">@font/inter_bold</item>
-        <item name="android:letterSpacing">-0.01</item>
-        <item name="android:textSize">14sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">#BA0000</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
-    <!-- Style for the On Delivery button -->
     <style name="CustomOnDeliveryButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
-        <item name="strokeColor">@android:color/holo_green_dark</item>
-        <item name="textColor">@android:color/white</item>
+        <item name="backgroundTint">@drawable/on_delivery_button_background</item>
+        <item name="android:textColor">@color/on_delivery_text_color</item>
+        <item name="strokeColor">#489A00</item>
         <item name="strokeWidth">2dp</item>
-        <item name="fontFamily">@font/inter_bold</item>
-        <item name="android:letterSpacing">-0.01</item>
-        <item name="android:textSize">14sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">#00B507</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+    <style name="FullWidthDialogStyle" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowIsFloating">false</item> <!-- Prevent minimization -->
+        <item name="android:windowMinWidthMajor">100%</item> <!-- Full width in portrait -->
+        <item name="android:windowMinWidthMinor">100%</item> <!-- Full width in landscape -->
+        <item name="android:background">@android:color/transparent</item> <!-- Transparent background -->
+    </style>
+    <style name="CustomDialogStyle" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowIsFloating">true</item> <!-- Prevent minimization -->
+        <item name="android:windowMinWidthMajor">90%</item> <!-- Full width in portrait -->
+        <item name="android:windowMinWidthMinor">90%</item> <!-- Full width in landscape -->
+        <item name="android:background">@android:color/transparent</item> <!-- Transparent background -->
     </style>
 
 </resources>
