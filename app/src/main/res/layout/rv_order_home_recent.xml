@@ -6,6 +6,7 @@
     app:cardCornerRadius="8dp"
     app:cardElevation="4dp"
     android:layout_margin="5dp"
+    android:id="@+id/order_item_dashboard"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,7 +23,7 @@
             >
 
             <TextView
-                android:id="@+id/orderId"
+                android:id="@+id/orderId_dash"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/order_1234"
@@ -30,7 +31,7 @@
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/orderStatus"
+                android:id="@+id/orderStatus_dash"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Status: Pending"
@@ -53,6 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/total_price_value"
+                android:id="@+id/orderTotal_dash"
                 android:textColor="@android:color/holo_green_dark"
 
                 android:layout_marginTop="4dp"

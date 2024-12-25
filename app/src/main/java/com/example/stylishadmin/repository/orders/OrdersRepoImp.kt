@@ -35,23 +35,23 @@ class OrdersRepoImp : OrdersRepositoryInterface {
         }
      }
 
-    override suspend fun setOrderStatues(orderId: String, status: Boolean): Result<Boolean> {
+    override suspend fun setOrderStatues(orderId: String, status: String): Result<Boolean> {
         val orderRef = ordersRef.child(orderId)
-        val statusValue = if(status){ "on_delivery" }else{"Confirmed"}
-        //set the order to active
         return try {
-            orderRef.child("status").setValue(statusValue).await()
-            val snapshot = orderRef.child("active").get().await()
-            val onlineState = snapshot.getValue(Boolean::class.java)
-            if (onlineState != null) {
-                Result.success(onlineState)
+
+            orderRef.child("status").setValue(status).await()
+            val snapshot = orderRef.child("status").get().await()
+            val statusValue = snapshot.getValue(String::class.java)
+
+            if (statusValue != null) {
+                Result.success(true)
             } else {
                 Result.failure(Exception("Order not found"))
             }
-
         } catch (e: Exception) {
             Result.failure(e)
         }
+
     }
 
 }

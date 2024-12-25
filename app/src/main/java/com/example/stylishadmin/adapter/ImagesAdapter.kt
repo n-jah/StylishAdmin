@@ -13,7 +13,7 @@ import com.example.stylishadmin.R
 class ImagesAdapter(
     private val images: MutableList<String>, // List of image URLs
     private val onAddClick: () -> Unit,     // Callback for Add button
-    private val onImageClick: (String) -> Unit // Callback for image clicks
+    private val onRemoveImageClick: (String) -> Unit // Callback for image clicks
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
@@ -43,7 +43,7 @@ class ImagesAdapter(
 
         } else if (holder is ImageViewHolder) {
             val imageUrl = images[position - 1] // Offset by 1 for Add button
-            holder.bind(imageUrl, onImageClick)
+            holder.bind(imageUrl, onRemoveImageClick)
 
 
         }
@@ -63,10 +63,10 @@ class ImagesAdapter(
     // ViewHolder for Images
     class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val imageView: ImageView = itemView.findViewById(R.id.imageView)
-
-        fun bind(imageUrl: String, onImageClick: (String) -> Unit) {
+        private  val removeImage : ImageView = itemView.findViewById(R.id.removeButtonImage)
+        fun bind(imageUrl: String, onRemoveImageClick: (String) -> Unit ) {
             Glide.with(itemView.context).load(imageUrl).into(imageView)
-            itemView.setOnClickListener { onImageClick(imageUrl) }
+            removeImage.setOnClickListener { onRemoveImageClick(imageUrl) }
 
         }
     }

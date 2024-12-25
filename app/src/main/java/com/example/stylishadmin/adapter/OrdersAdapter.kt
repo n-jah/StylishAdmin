@@ -27,6 +27,53 @@ class OrdersAdapter(
         val materialButtonToggleGroup: com.google.android.material.button.MaterialButtonToggleGroup =
             itemView.findViewById(R.id.materialButtonToggleGroup)
 
+        fun bind(order: Order) {
+            // Bind order details
+            orderId.text = "Order ID: ${order.orderId}"
+            orderDate.text = "Date: ${order.date}"
+            orderTotalPrice.text = "Total: ${order.totalPrice } $"
+            orderAddress.text = "Address: ${order.address.detailedAddress}"
+
+            // Set up nested RecyclerView
+            val orderItemsAdapter = OrderItemsAdapter(order.orderItems)
+            orderItemsRecyclerView.layoutManager = LinearLayoutManager(
+                orderItemsRecyclerView.context,
+                LinearLayoutManager.HORIZONTAL,
+                false
+            )
+            orderItemsRecyclerView.adapter = orderItemsAdapter
+
+            // Update background based on order status
+            card_order.setBackgroundResource(
+                if (order.status == "on delivery") R.drawable.card_bg
+                else R.drawable.card_pending_bg
+            )
+
+            // Update toggle button status
+            materialButtonToggleGroup.check(
+                if (order.status == "pending") R.id.btn_pending else R.id.btn_on_delivery
+            )
+
+            // Prevent duplicate listeners
+            materialButtonToggleGroup.clearOnButtonCheckedListeners()
+            materialButtonToggleGroup.addOnButtonCheckedListener { _, checkedId, isChecked ->
+                if (isChecked) {
+                    val newStatus = when (checkedId) {
+                        R.id.btn_pending -> "pending"
+                        R.id.btn_on_delivery -> "on delivery"
+                        else -> order.status
+                    }
+                    if (newStatus != order.status) {
+                        order.status = newStatus
+                        onStatusChanged(order, newStatus)
+                        card_order.setBackgroundResource(
+                            if (newStatus == "on delivery") R.drawable.card_bg
+                            else R.drawable.card_pending_bg
+                        )
+                    }
+                }
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OrderViewHolder {
@@ -37,59 +84,14 @@ class OrdersAdapter(
 
     override fun onBindViewHolder(holder: OrderViewHolder, position: Int) {
         val order = orderList[position]
-        holder.orderId.text = "Order ID: ${order.orderId}"
-        holder.orderDate.text = "Date: ${order.date}"
-        holder.orderTotalPrice.text = "Total: ${order.totalPrice}"
-        holder.orderAddress.text = "Address: ${order.address.detailedAddress}"
-        val orderItemsAdapter = OrderItemsAdapter(order.orderItems)
-
-        // Set up the Segmented Button with material
-        holder.materialButtonToggleGroup.check(
-            if (order.status == "pending") R.id.btn_pending else R.id.btn_on_delivery
-        )
-        holder.materialButtonToggleGroup.addOnButtonCheckedListener { _, checkedId, isChecked ->
-            if (isChecked) {
-                val newStatus = when (checkedId) {
-                    R.id.btn_pending -> "pending"
-                    R.id.btn_on_delivery -> "on delivery"
-                    else -> order.status
-
-                }
-                if (newStatus != order.status) {
-                    order.status = newStatus
-                    onStatusChanged(order, newStatus)
-                    notifyItemChanged(holder.adapterPosition)
-                    holder.card_order.setBackgroundResource(
-                        if (newStatus == "on delivery") R.drawable.card_bg
-                        else R.drawable.card_pending_bg
-                    )
-
-                }
-            }
-        }
-
-        // Update background based on the current status
-        holder.card_order.setBackgroundResource(
-            if (order.status == "on delivery") R.drawable.card_bg
-            else R.drawable.card_pending_bg
-        )
-
-
-        // Set up the nested RecyclerView with order items
-        holder.orderItemsRecyclerView.layoutManager = LinearLayoutManager(
-            holder.orderItemsRecyclerView.context,
-            LinearLayoutManager.HORIZONTAL,
-            false
-        )
-        holder.orderItemsRecyclerView.adapter = orderItemsAdapter
-
+        holder.bind(order)
     }
 
-
     override fun getItemCount(): Int = orderList.size
+
     fun updateOrders(newOrderList: List<Order>) {
+        // Update the dataset and refresh the RecyclerView
         orderList = newOrderList
         notifyDataSetChanged()
-
     }
 }

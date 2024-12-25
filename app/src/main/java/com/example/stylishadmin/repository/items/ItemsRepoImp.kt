@@ -1,5 +1,6 @@
 package com.example.stylishadmin.repository.items
 
+import android.util.Log
 import androidx.core.net.toUri
 import com.example.stylishadmin.model.items.Item
 import com.google.firebase.database.ktx.database
@@ -144,6 +145,21 @@ class ItemsRepoImp : ItemsRepositoryInterface {
         }catch (e: Exception){
             Result.failure(e)
         }
+    }
+
+    override suspend fun getItemsStatistics(): Result<Map<String, Int>> {
+        return try {
+
+            //every brand with total items
+            val snapshot = itemsRef.get().await()
+            val items = snapshot.children.mapNotNull { it.getValue(Item::class.java) }
+            val statistics = items.groupingBy { it.brand }.eachCount()
+            Log.d("ItemsRepoImp", "Statistics: $statistics")
+            Result.success(statistics)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+
     }
 
 

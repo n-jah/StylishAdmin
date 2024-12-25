@@ -209,7 +209,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
         <com.github.mikephil.charting.charts.PieChart
-            android:id="@+id/usersPieChart"
+            android:id="@+id/ordersPieChart"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="6dp"

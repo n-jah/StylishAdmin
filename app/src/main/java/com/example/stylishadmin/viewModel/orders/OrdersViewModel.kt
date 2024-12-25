@@ -17,12 +17,16 @@ class OrdersViewModel(private val ordersRepository: OrdersRepositoryInterface) :
 
     private val _order = MutableLiveData<Order?>()
     val order: MutableLiveData<Order?> get() = _order
+//
+//    private val _activeOrder = MutableLiveData<Boolean?>()
+//    val activeOrder: MutableLiveData<Boolean?> get() = _activeOrder
 
-    private val _activeOrder = MutableLiveData<Boolean?>()
-    val activeOrder: MutableLiveData<Boolean?> get() = _activeOrder
+    private var totalOrders  : Int? = null
+    private var totalPendingOrders : Int? = null
+    private var totalDeliveredOrders : Int? = null
 
     init {
-        getOrder("-OCHdZkkTI9vzvbXyLOs")
+    getOrders()
     }
 
     fun getOrders() {
@@ -67,20 +71,47 @@ class OrdersViewModel(private val ordersRepository: OrdersRepositoryInterface) :
     }
 
 
-    fun setOrderState(orderId: String, status: Boolean) {
+    fun setOrderState(orderId: String, status: String) {
         _loading.value = true
         viewModelScope.launch {
             try {
                 val result = ordersRepository.setOrderStatues(orderId, status)
+
                 if (result.isSuccess) {
-                    _activeOrder.postValue(result.getOrNull())
-                    Log.d("OrdersViewModel", "Order state updated successfully: ${_activeOrder.value}")
+                    Log.d("OrdersViewModel", "Order status updated successfully")
                 } else {
-                    _activeOrder.postValue(null)
+                    Log.d("OrdersViewModel", "Error updating order status")
                 }
             } catch (e: Exception) {
-                _activeOrder.postValue(null)
-                Log.d("OrdersViewModel", "Error updating order state: ${e.message}")
+                Log.d("OrdersViewModel", "Error updating order status: ${e.message}")
+            } finally {
+                _loading.postValue(false)
+            }
+        }
+    }
+
+
+
+
+    fun getStatistics(onResult: (Result<Map<String, Int>>) -> Unit) {
+        _loading.value = true
+        viewModelScope.launch {
+            try {
+                val result = ordersRepository.getOrders()
+
+                if (result.isSuccess) {
+                    val orders = result.getOrNull()
+                    totalOrders = orders?.size
+                    totalPendingOrders = orders?.count { it.status == "pending" }
+                    totalDeliveredOrders = orders?.count { it.status == "on delivery" }
+                    val ordersData = mapOf( "Pending Orders" to totalPendingOrders!!, "Completed Orders" to totalDeliveredOrders!!)
+                    onResult(Result.success(ordersData))
+                } else {
+                    onResult(Result.failure(Exception("Error fetching statistics data")))
+                }
+            } catch (e: Exception) {
+                onResult(Result.failure(e))
+                Log.d("OrdersViewModel", "Error fetching statistics data: ${e.message}")
             } finally {
                 _loading.postValue(false)
             }

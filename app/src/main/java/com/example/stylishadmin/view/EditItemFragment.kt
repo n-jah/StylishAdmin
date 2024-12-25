@@ -13,6 +13,7 @@ import com.example.stylishadmin.adapter.SizeStockAdapter
 import com.example.stylishadmin.databinding.FragmentEditItemBinding
 import com.example.stylishadmin.model.brands.Brand
 import com.example.stylishadmin.model.items.Item
+import com.example.stylishadmin.model.items.Size
 
 class EditItemFragment : Fragment() {
 
@@ -44,6 +45,10 @@ class EditItemFragment : Fragment() {
         binding.priceInputText.setText(item.price.toString())
         binding.productDescription.setText(item.description)
 
+        binding.backButton.setOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
+
 
         setUpRVSizeandImages(item)
 
@@ -59,14 +64,29 @@ class EditItemFragment : Fragment() {
     private fun setUpRVSizeandImages(item : Item) {
         //get sizes to mutable list of pair <string , int>
         val sizes = item.sizes.map { it.size to it.stock }.toMutableList()
+
         binding.sizeStockRv.adapter = SizeStockAdapter(sizes, onEditClick = {
-            // Handle edit size and stock
-            Toast.makeText(requireContext(), "Edit size and stock", Toast.LENGTH_SHORT).show()
-        })
+            val dialog = ManageSizeDialogFragment.newInstance(sizes.map { Size(it.first,it.second) })
+            dialog.show(childFragmentManager, "ManageSizeDialogFragment")
+        }
+
+        )
+
+
         binding.sizeStockRv.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.sizeStockRv.setHasFixedSize(true)
 
-        binding.itemImagesRv.adapter = ImagesAdapter(item.imgUrl.toMutableList(), onImageClick = {}, onAddClick = {})
+        binding.itemImagesRv.adapter = ImagesAdapter(item.imgUrl.toMutableList(), onRemoveImageClick = {
+            Toast.makeText(requireContext(),"remove this image ",Toast.LENGTH_SHORT).show()
+            val index = item.imgUrl.indexOf(it)
+            if (index >= 0) {
+                item.imgUrl.removeAt(index)
+                binding.itemImagesRv.adapter?.notifyItemRemoved(index)
+            }
+        }, onAddClick = {
+            Toast.makeText(requireContext(),"add images", Toast.LENGTH_SHORT).show()
+
+        })
         binding.itemImagesRv.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.itemImagesRv.setHasFixedSize(true)
 

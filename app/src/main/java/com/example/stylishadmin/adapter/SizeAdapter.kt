@@ -33,8 +33,7 @@ class SizeAdapter(
 
                 btnDelete.setOnClickListener {
                     onDeleteClick(item) // Handle deletion
-                    notifyItemRemoved(adapterPosition) // Remove item from list
-                    sizes.removeAt(adapterPosition) // Remove item from data
+
                 }
             }
         }

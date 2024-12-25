@@ -19,14 +19,17 @@ import com.google.android.material.color.MaterialColors
 class BrandsAdapter(
     private var brandList: List<Brand> = emptyList(),
     private var isLoading: Boolean = true,
-    private val onBrandSelected: (Brand) -> Unit
+    private val onBrandSelected: (Brand) -> Unit,
+    private val onManageClicked:()->Unit,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var selectedPosition = RecyclerView.NO_POSITION
 
     private val VIEW_TYPE_ITEM = 0
     private val VIEW_TYPE_SHIMMER = 1
-    private val VIEW_TYPE_MANAGEMENT = 2
+
+    private var VIEW_TYPE_MANAGEMENT = 2
+
 
     // ViewHolder for brand items
     inner class BrandViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -34,6 +37,7 @@ class BrandsAdapter(
         val brandName: TextView = itemView.findViewById(R.id.brand_name)
 
         init {
+
             itemView.setOnClickListener {
                 val adjustedPosition = adapterPosition - 1 // Adjust for "Manage Brands"
                 if (adjustedPosition >= 0 && adjustedPosition < brandList.size) {
@@ -52,11 +56,11 @@ class BrandsAdapter(
 
     // ViewHolder for the "Manage Brands" button
     inner class ManageBrandsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        init {
-            itemView.setOnClickListener {
-                // Handle "Manage Brands" button click
-            }
+        fun bind(onManageClicked: () -> Unit){
+            itemView.setOnClickListener { onManageClicked() }
         }
+
+
     }
 
     // ViewHolder for shimmer placeholders
@@ -70,10 +74,14 @@ class BrandsAdapter(
                 LayoutInflater.from(parent.context)
                     .inflate(R.layout.item_brand, parent, false)
             )
-            VIEW_TYPE_MANAGEMENT -> ManageBrandsViewHolder(
-                LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_manage_brands, parent, false)
-            )
+            VIEW_TYPE_MANAGEMENT ->
+
+                    ManageBrandsViewHolder(
+                        LayoutInflater.from(parent.context)
+                            .inflate(R.layout.item_manage_brands, parent, false)
+                    )
+
+
             else -> ShimmerViewHolder(
                 LayoutInflater.from(parent.context)
                     .inflate(R.layout.sample_shimmer_item_brand, parent, false)
@@ -106,10 +114,11 @@ class BrandsAdapter(
             }
             VIEW_TYPE_MANAGEMENT -> {
                 val manageBrandsViewHolder = holder as ManageBrandsViewHolder
-                holder.itemView.setOnClickListener {
-                    Toast.makeText(holder.itemView.context, "Manage Brands Clicked", Toast.LENGTH_SHORT).show()
+                manageBrandsViewHolder.itemView.setOnClickListener {
+                    onManageClicked()
                 }
-                holder.itemView.setBackgroundResource(
+                manageBrandsViewHolder.bind(onManageClicked)
+                manageBrandsViewHolder.itemView.setBackgroundResource(
                     R.drawable.default_item_background
                 )
 
@@ -150,7 +159,6 @@ class BrandsAdapter(
             onBrandSelected(brandList[allIndex])
         }
     }
-
 
 
     fun setLoadingState(loading: Boolean) {

@@ -20,8 +20,22 @@ class ManageSizeDialogFragment : DialogFragment() {
     private var _binding: DialogSizeManagerBinding? = null
     private val binding get() = _binding!!
 
-    private val sizeStockList = mutableListOf<Size>()
+
+
+    private var sizeStockList = mutableListOf<Size>()
     private lateinit var adapter: SizeAdapter
+
+    companion object {
+        private const val ARG_SIZES = "sizes"
+
+        fun newInstance(sizes: List<Size>): ManageSizeDialogFragment {
+            val fragment = ManageSizeDialogFragment()
+            val args = Bundle()
+            args.putParcelableArrayList(ARG_SIZES, ArrayList(sizes)) // Pass sizes as a Parcelable ArrayList
+            fragment.arguments = args
+            return fragment
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,14 +52,6 @@ class ManageSizeDialogFragment : DialogFragment() {
         // Set up the RecyclerView and button behavior
         setUpRecyclerView()
         setUpAddNewSizeButton()
-    }
-
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val dialog = super.onCreateDialog(savedInstanceState)
-
-        dialog.setCanceledOnTouchOutside(false)
-        // set window fill screen
-        return dialog
     }
 
     override fun onResume()     {
@@ -70,15 +76,8 @@ class ManageSizeDialogFragment : DialogFragment() {
 
     private fun setUpRecyclerView() {
         // Sample sizes to populate the RecyclerView initially
-        sizeStockList.apply {
-            addAll(
-                listOf(
-                    Size("S", 10),
-                    Size("M", 20),
-                    Size("L", 15)
-                )
-            )
-        }
+
+        sizeStockList = (arguments?.getParcelableArrayList<Size>(ARG_SIZES) ?: emptyList()).toMutableList()
 
         // Initialize the adapter with sizeStockList
         adapter = SizeAdapter(

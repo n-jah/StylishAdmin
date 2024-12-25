@@ -14,6 +14,10 @@ class BrandsViewModel(private val brandsRepository: BrandsRepoInterface ): ViewM
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> get() = _loading
 
+    init {
+
+        getBrands()
+    }
     fun getBrands() {
         _loading.value = true
         viewModelScope.launch {
@@ -53,6 +57,42 @@ class BrandsViewModel(private val brandsRepository: BrandsRepoInterface ): ViewM
                 }
         }
     }
+    fun addImageFromDevice(brand: Brand){
+        _loading.value = true
+        viewModelScope.launch {
+            try {
+                val result = brandsRepository.addImageFromDevice()
+                if (result.isSuccess){
+                    _loading.postValue(false)
+                }else{
+                    _loading.postValue(false)
+                }
+            }catch (e: Exception){
+                _loading.postValue(false)
+            }finally {
+                _loading.postValue(false)
+            }
+        }
+    }
+
+//    fun deleteBrand(brand: Brand){
+//        _loading.value = true
+//        viewModelScope.launch {
+//            try {
+//                val result = brandsRepository.deleteBrand(brand)
+//                if (result.isSuccess){
+//                    _loading.postValue(false)
+//                }else{
+//                    _loading.postValue(false)
+//                }
+//            }catch (e: Exception){
+//                _loading.postValue(false)
+//            }finally {
+//                _loading.postValue(false)
+//            }
+//        }
+//    }
+
 
 
 }

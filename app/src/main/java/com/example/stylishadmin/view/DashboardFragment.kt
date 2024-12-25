@@ -5,10 +5,23 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.example.stylishadmin.R
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.stylishadmin.adapter.DashboardOrdersAdapter
 import com.example.stylishadmin.databinding.FragmentDashboardBinding
 import com.example.stylishadmin.model.orders.Order
+import com.example.stylishadmin.repository.items.ItemsRepoImp
+import com.example.stylishadmin.repository.orders.OrdersRepoImp
+import com.example.stylishadmin.repository.users.UserRepoImp
+import com.example.stylishadmin.viewModel.items.ItemsViewModel
+import com.example.stylishadmin.viewModel.items.ItemsViewModelFactory
+import com.example.stylishadmin.viewModel.orders.OrdersViewModel
+import com.example.stylishadmin.viewModel.orders.OrdersViewModelFactory
+import com.example.stylishadmin.viewModel.users.UserViewModelFactory
+import com.example.stylishadmin.viewModel.users.UsersViewModel
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
@@ -18,6 +31,15 @@ class DashboardFragment : Fragment() {
 
     private var _binding: FragmentDashboardBinding? = null
     private val binding get() = _binding!!
+
+
+    // viewmodel
+    private lateinit var ordersViewModel : OrdersViewModel
+    private  lateinit var itemsViewModel : ItemsViewModel
+    private lateinit var usersViewModel: UsersViewModel
+
+
+    private  lateinit var  ordersAdapter: DashboardOrdersAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,23 +51,108 @@ class DashboardFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        //start viewmodel
+        initViewModel()
         // Fetch and display recent orders
-        fetchAndDisplayRecentOrders()
-        // Handle the visibility of the empty view
-        handleEmptyView(emptyList())
+        setupRecyclerView()
+        // Fetch data and update UI
+        fetchInitialData()
+        // init observer
+        initObservers()
+
+        // Set up the pie chart statistics
+        brandsStatistics()
+        ordersStatistics()
+        //topPart statistics
 
 
-        val userPieChart = view.findViewById<PieChart>(R.id.usersPieChart)
-        val itemPieChart = view.findViewById<PieChart>(R.id.itemsPieChart)
-
-        val userData = mapOf("Pending Orders" to 30, "Completed Orders" to 60)
-        val itemData = mapOf("Nike" to 30, "Puma" to 50, "Addidas" to 10, "Other " to 20)
-
-        // Set up the pie charts
-        setupPieChart(userPieChart, userData)
-        setupPieChart(itemPieChart, itemData)
+    }
 
 
+    private fun initViewModel() {
+
+        //orders
+        val ordersFactory = OrdersViewModelFactory(OrdersRepoImp())
+        ordersViewModel = ViewModelProvider(requireActivity(), ordersFactory)[OrdersViewModel::class.java]
+
+        //items
+        val itemsFactory = ItemsViewModelFactory(ItemsRepoImp())
+        itemsViewModel = ViewModelProvider(requireActivity(), itemsFactory)[ItemsViewModel::class.java]
+
+        //users
+        val usersFactory = UserViewModelFactory(UserRepoImp())
+        usersViewModel = ViewModelProvider(requireActivity(),usersFactory)[UsersViewModel::class.java]
+
+
+    }
+
+    private fun setupRecyclerView() {
+
+        ordersAdapter = DashboardOrdersAdapter(emptyList())
+        binding.recentOrdersList.adapter = ordersAdapter
+        binding.recentOrdersList.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+
+    }
+
+    private fun initObservers() {
+
+        //loading
+        ordersViewModel.loading.observe(viewLifecycleOwner, Observer {
+            setProgressBarVisibility(it)
+        })
+
+        // orders
+        ordersViewModel.orders.observe(viewLifecycleOwner) { orders ->
+            ordersAdapter.updateOrders(orders?.reversed())
+            if (orders != null) {
+                handleEmptyView(orders)
+            }
+        }
+
+        // users
+
+        usersViewModel.users.observe(viewLifecycleOwner) { users ->
+            binding.totalCustomersTv.text = users?.size?.toString() ?: "0"
+        }
+
+        //get total products
+        itemsViewModel.items.observe(viewLifecycleOwner) { items ->
+            binding.totalProductsTv.text = items?.size?.toString() ?: "0"
+        }
+
+    }
+    private fun fetchInitialData() {
+        ordersViewModel.getOrders()
+        itemsViewModel.getItems()
+        usersViewModel.getTotalUsers()
+
+    }
+    private fun ordersStatistics() {
+        setupPieChart(binding.ordersPieChart, mapOf("" to 0))
+        ordersViewModel.getStatistics { statistics ->
+            if (statistics.isSuccess) {
+                val ordersData = statistics.getOrNull()
+                if (ordersData != null) {
+                    setupPieChart(binding.ordersPieChart, ordersData)
+                }
+            }
+        }
+
+    }
+    private fun brandsStatistics() {
+        var totalBrands : Int? = 0
+       setupPieChart(binding.itemsPieChart, mapOf("" to 0))
+        itemsViewModel.getItemsStatistics { items ->
+            if (items.isSuccess){
+                val itemsData = items.getOrNull()
+                if (itemsData != null) {
+                    setupPieChart(binding.itemsPieChart, itemsData)
+                    totalBrands = itemsData.size
+                    binding.totalBrandsTv.text = totalBrands.toString()
+                }
+            }
+        }
     }
 
 
@@ -115,10 +222,6 @@ class DashboardFragment : Fragment() {
         return colors
     }
 
-
-    private fun fetchAndDisplayRecentOrders() {
-
-    }
 
     // Function to handle the visibility of the empty view
     private fun handleEmptyView(cartItems: List<Order>) {

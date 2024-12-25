@@ -27,4 +27,9 @@ class BrandsRepoImpl : BrandsRepoInterface {
             Result.failure(e)
         }
     }
+
+    override suspend fun addImageFromDevice(): Result<String> {
+        // Add image from device
+
+    }
 }

@@ -284,4 +284,27 @@ class ItemsViewModel(private val itemsRep: ItemsRepositoryInterface): ViewModel(
         }
     }
 
+
+    // statistics
+    // every brand and all items
+    fun getItemsStatistics(onResult: (Result<Map<String, Int>>) -> Unit) {
+        _loading.value = true
+        viewModelScope.launch {
+            try {
+                val result = itemsRep.getItemsStatistics()
+                if (result.isSuccess) {
+                    _loading.postValue(false)
+                    onResult(Result.success(result.getOrNull() ?: emptyMap()))
+                } else {
+                    _loading.postValue(false)
+                    onResult(Result.failure(Exception("Failed to get items statistics")))
+                }
+            }catch (e: Exception) {
+                _loading.postValue(false)
+                onResult(Result.failure(e))
+            }finally {
+                _loading.postValue(false)
+            }
+        }
+    }
 }

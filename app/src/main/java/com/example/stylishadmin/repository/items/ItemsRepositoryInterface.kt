@@ -21,6 +21,7 @@ interface ItemsRepositoryInterface {
     suspend fun putItemImagesURLsInRemoteStorage(imageUrls: List<String>, itemId: String): Result<Boolean>
     //get spacifec item images
     suspend fun getImagesOfItemFromRemoteStorage(itemId: String): Result<List<String>>
+    suspend fun getItemsStatistics(): Result<Map<String,Int>>
 
 
 }

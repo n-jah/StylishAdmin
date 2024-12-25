@@ -26,4 +26,16 @@ class  UserRepoImp: UserRepoInterface {
             return Result.failure(e)
         }
     }
+
+    override suspend fun getTotalUsers(): Result<List<User>> {
+        return try {
+            val snapshot = usersRef.get().await()
+            val users = snapshot.children.mapNotNull { it.getValue(User::class.java) }
+            Result.success(users)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+
 }
