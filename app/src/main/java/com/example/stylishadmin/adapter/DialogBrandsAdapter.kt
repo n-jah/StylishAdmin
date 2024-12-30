@@ -13,18 +13,17 @@ import com.example.stylishadmin.R
 import com.example.stylishadmin.model.brands.Brand
 
 class DialogBrandsAdapter (
-    var brands : List<Brand>
+    var brands : List<Brand>, val onDelete: (brand: Brand) -> Unit
 ): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
     inner class BrandViewHolder (itemView  :View) :  RecyclerView.ViewHolder(itemView) {
         val brandIcon: ImageView = itemView.findViewById(R.id.brand_img_icon)
         val brandName: TextView = itemView.findViewById(R.id.brand_name)
-
-
+        val deleteBrand: ImageView = itemView.findViewById(R.id.removeButtonImagebrand)
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
         return BrandViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.item_brand,parent,false)
+            LayoutInflater.from(parent.context).inflate(R.layout.item_brandedite,parent,false)
         )
 
     }
@@ -39,13 +38,15 @@ class DialogBrandsAdapter (
         val requestOptions = RequestOptions().transforms(CenterInside())
         Glide.with(holder.itemView.context)
             .load(brand.imgIcon)
-            .placeholder(R.drawable.adidas)
             .apply(requestOptions)
             .into(brandViewHolder.brandIcon)
 
         holder.itemView.setBackgroundResource(
             R.drawable.default_item_background
         )
+        holder.deleteBrand.setOnClickListener {
+            onDelete(brand)
+        }
 
     }
     fun update(list : List<Brand>){

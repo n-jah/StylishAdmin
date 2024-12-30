@@ -72,13 +72,27 @@ class StoreFragment : Fragment() {
         //setup observers
         setupObservers()
 
-
         // nav to add item fragment
         binding.addProductFAB.setOnClickListener {
             val navController = findNavController()
             navController.navigate(R.id.action_myStoreFragment_to_addItemFragment)
         }
+        binding.swipfreshlayout.setOnRefreshListener {
+            refreshData()
+        }
 
+
+
+    }
+
+    private fun refreshData() {
+
+        lifecycleScope.launch {
+            itemsViewModel.getItems()
+            brandsViewModel.getBrands()
+            delay(1000)
+            binding.swipfreshlayout.isRefreshing = false
+        }
 
     }
 
@@ -129,7 +143,9 @@ class StoreFragment : Fragment() {
         itemsViewModel.getItems()
         brandsViewModel.getBrands()
     }
+
     private fun setUpSearch() {
+        binding.productSearchBar.setOnClickListener { binding.productSearchBar.isIconified = false }
         binding.productSearchBar.setOnQueryTextListener(object :
             androidx.appcompat.widget.SearchView.OnQueryTextListener,
             SearchView.OnQueryTextListener {
@@ -162,7 +178,6 @@ class StoreFragment : Fragment() {
             itemsAdapter.updateItems(filteredList)
         }
     }
-
     private fun setupRecyclerView() {
         brandsAdapter = BrandsAdapter(emptyList(), true, { brand ->
 

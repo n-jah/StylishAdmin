@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="40dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/item_brand"
+    android:layout_marginStart="10dp"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="2dp"
+    android:background="@drawable/default_item_background"
+    app:strokeWidth="0dp"
+    >
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingStart="5dp"
+
+        >
+
+        <RelativeLayout
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/button_brand"
+            android:focusable="false"
+            android:backgroundTint="?attr/colorBrandBackground"
+            android:clickable="false"
+
+            >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:id="@+id/brand_img_icon"
+
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="7dp"
+                android:layout_marginTop="7dp"
+                android:layout_marginEnd="7dp"
+                android:layout_marginBottom="7dp"
+                android:src="@drawable/adidas" />
+
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/brand_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/adidas"
+            android:textSize="15sp"
+            android:textColor="?attr/colorOnBackground"
+            android:textStyle="bold"
+            android:fontFamily="@font/inter_bold"
+            android:layout_gravity="center_vertical"
+            android:padding="5dp"
+            />
+
+        <ImageView
+            android:id="@+id/removeButtonImagebrand"
+            android:layout_width="25dp"
+            android:background="@drawable/circle"
+            android:layout_height="25dp"
+            android:layout_marginTop="-3dp"
+            android:src="@drawable/remove_minus_circlecom"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+
+            />
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

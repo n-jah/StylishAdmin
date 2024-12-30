@@ -1,14 +1,24 @@
 package com.example.stylishadmin.adapter
 
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Adapter
 import android.widget.ImageView
-import androidx.cardview.widget.CardView
+import android.widget.Toast
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.stylishadmin.utils.ImageUtils.getResizedAndCompressedBitmap
+
 import com.example.stylishadmin.R
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ImagesAdapter(
     private val images: MutableList<String>, // List of image URLs
@@ -37,13 +47,31 @@ class ImagesAdapter(
         }
     }
 
+    fun getResizedAndCompressedBitmapAsync(
+        context : Context,
+        uri: Uri,
+        maxWidth: Int,
+        maxHeight: Int,
+        quality: Int,
+        onComplete: (ByteArray?) -> Unit
+    ) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val result = getResizedAndCompressedBitmap(context,uri, maxWidth, maxHeight, quality)
+            withContext(Dispatchers.Main) {
+                onComplete(result) // Call the callback on the UI thread
+                if (result == null) {
+                    Toast.makeText(context, "Failed to process the image.", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is AddViewHolder) {
             holder.bind(onAddClick)
 
         } else if (holder is ImageViewHolder) {
             val imageUrl = images[position - 1] // Offset by 1 for Add button
-            holder.bind(imageUrl, onRemoveImageClick)
+            holder.bind(imageUrl.toString(), onRemoveImageClick)
 
 
         }
@@ -61,14 +89,40 @@ class ImagesAdapter(
     }
 
     // ViewHolder for Images
-    class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val imageView: ImageView = itemView.findViewById(R.id.imageView)
         private  val removeImage : ImageView = itemView.findViewById(R.id.removeButtonImage)
+
+
         fun bind(imageUrl: String, onRemoveImageClick: (String) -> Unit ) {
-            Glide.with(itemView.context).load(imageUrl).into(imageView)
+            getResizedAndCompressedBitmapAsync(itemView.context,imageUrl.toUri(), 400, 400, 50) { compressedImage ->
+                if (compressedImage != null) {
+                    // Use the compressed image here
+                    val image = BitmapFactory.decodeByteArray(compressedImage, 0, compressedImage.size)
+                    imageView.setImageBitmap(image)
+
+                } else {
+                    Toast.makeText(itemView.context, "Failed to process the image.", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+           // Glide.with(itemView.context).load(imageUrl).into(imageView)
             removeImage.setOnClickListener { onRemoveImageClick(imageUrl) }
 
         }
+
+
+    }
+    fun addImage(image: String) {
+        images.add(image)
+        notifyDataSetChanged()
+
+    }
+
+    fun removeImage(image: String) {
+        images.remove(image)
+        notifyDataSetChanged()
+
     }
 
 

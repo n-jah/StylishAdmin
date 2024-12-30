@@ -254,26 +254,32 @@
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/chartSection" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recentOrdersList"
-        android:layout_width="0dp"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:id="@+id/swipfreshlayout"
         app:layout_constraintTop_toBottomOf="@id/recentOrdersLabel"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:listitem="@layout/rv_order_home_recent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:padding="10dp"
-        android:clipToPadding="false" />
+        app:layout_constraintEnd_toEndOf="parent" app:layout_constraintBottom_toBottomOf="parent"
 
+        >
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recentOrdersList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            tools:listitem="@layout/rv_order_home_recent"
+            android:padding="10dp"
+            android:clipToPadding="false" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/emptyAnimation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/recentOrdersList"
+        app:layout_constraintBottom_toBottomOf="@+id/swipfreshlayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/recentOrdersLabel"

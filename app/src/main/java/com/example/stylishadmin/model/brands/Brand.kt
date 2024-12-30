@@ -5,11 +5,14 @@ import android.os.Parcelable
 
 data class Brand(
     val brandName: String = "",
-    val imgIcon: String = ""
+    val imgIcon: String = "",
+    var id: String = ""
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString().toString(),
+        parcel.readString().toString(),
         parcel.readString().toString()
+
     ) {
     }
 
@@ -19,6 +22,7 @@ data class Brand(
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(brandName)
         parcel.writeString(imgIcon)
+        parcel.writeString(id)
     }
 
     override fun describeContents(): Int {

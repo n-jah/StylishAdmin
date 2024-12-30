@@ -64,6 +64,7 @@ dependencies {
 
     //animation
     implementation (libs.android.lottie)
+    implementation(libs.androidx.swiperefreshlayout.v110)
 
     implementation (libs.mpandroidchart)
 

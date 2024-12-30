@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.stylishadmin.adapter.DashboardOrdersAdapter
 import com.example.stylishadmin.databinding.FragmentDashboardBinding
@@ -26,6 +27,8 @@ import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class DashboardFragment : Fragment() {
 
@@ -66,7 +69,19 @@ class DashboardFragment : Fragment() {
         ordersStatistics()
         //topPart statistics
 
+        binding.swipfreshlayout.setOnRefreshListener {
+            refreshData()
+        }
 
+    }
+
+    private fun refreshData() {
+
+        lifecycleScope.launch {
+            ordersViewModel.getOrders()
+            delay(1000)
+            binding.swipfreshlayout.isRefreshing = false
+        }
     }
 
 

@@ -8,9 +8,10 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.stylishadmin.R
+import com.example.stylishadmin.model.items.Size
 
 class SizeStockAdapter(
-    private val sizes: MutableList<Pair<String, Int>>, // List of size and stock
+    private val sizes: MutableList<Size>, // List of size and stock
     private val onEditClick: () -> Unit     // Callback for editing existing size and stock
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -52,6 +53,12 @@ class SizeStockAdapter(
     }
 
     override fun getItemCount(): Int = sizes.size + 1 // +1 for Add New card
+    fun updateSizes(updatedSizes: List<Size>) {
+
+        sizes.clear()
+        sizes.addAll(updatedSizes)
+        notifyDataSetChanged()
+    }
 
     // ViewHolder for Add New card
     class AddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -68,9 +75,9 @@ class SizeStockAdapter(
         private val tvSize: TextView = itemView.findViewById(R.id.tv_size_content)
         private val tvStock: TextView = itemView.findViewById(R.id.tv_stock_content)
 
-        fun bind(sizeStock: Pair<String, Int>) {
-            tvSize.text = sizeStock.first
-            tvStock.text = sizeStock.second.toString()
+        fun bind(sizeStock: Size) {
+            tvSize.text = sizeStock.size
+            tvStock.text = sizeStock.stock.toString()
         }
     }
 }

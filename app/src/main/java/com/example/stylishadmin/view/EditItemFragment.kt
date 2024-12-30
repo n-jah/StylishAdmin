@@ -63,10 +63,10 @@ class EditItemFragment : Fragment() {
 
     private fun setUpRVSizeandImages(item : Item) {
         //get sizes to mutable list of pair <string , int>
-        val sizes = item.sizes.map { it.size to it.stock }.toMutableList()
+        val sizes = item.sizes.toMutableList()
 
         binding.sizeStockRv.adapter = SizeStockAdapter(sizes, onEditClick = {
-            val dialog = ManageSizeDialogFragment.newInstance(sizes.map { Size(it.first,it.second) })
+            val dialog = ManageSizeDialogFragment.newInstance(sizes.map { Size(it.size,it.stock) })
             dialog.show(childFragmentManager, "ManageSizeDialogFragment")
         }
 
@@ -75,6 +75,8 @@ class EditItemFragment : Fragment() {
 
         binding.sizeStockRv.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.sizeStockRv.setHasFixedSize(true)
+
+        val itemsimages=item.imgUrl.toMutableList()
 
         binding.itemImagesRv.adapter = ImagesAdapter(item.imgUrl.toMutableList(), onRemoveImageClick = {
             Toast.makeText(requireContext(),"remove this image ",Toast.LENGTH_SHORT).show()

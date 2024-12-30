@@ -1,5 +1,6 @@
 package com.example.stylishadmin.viewModel.brands
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -57,11 +58,12 @@ class BrandsViewModel(private val brandsRepository: BrandsRepoInterface ): ViewM
                 }
         }
     }
-    fun addImageFromDevice(brand: Brand){
+
+    fun deleteBrand(brand: Brand){
         _loading.value = true
         viewModelScope.launch {
             try {
-                val result = brandsRepository.addImageFromDevice()
+                val result = brandsRepository.deleteBrand(brand)
                 if (result.isSuccess){
                     _loading.postValue(false)
                 }else{
@@ -75,24 +77,50 @@ class BrandsViewModel(private val brandsRepository: BrandsRepoInterface ): ViewM
         }
     }
 
-//    fun deleteBrand(brand: Brand){
-//        _loading.value = true
-//        viewModelScope.launch {
-//            try {
-//                val result = brandsRepository.deleteBrand(brand)
-//                if (result.isSuccess){
-//                    _loading.postValue(false)
-//                }else{
-//                    _loading.postValue(false)
-//                }
-//            }catch (e: Exception){
-//                _loading.postValue(false)
-//            }finally {
-//                _loading.postValue(false)
-//            }
-//        }
-//    }
+    fun uploadCompresdImageUriAndGetURL(byteArray: ByteArray, brandName : String, getUrl :(String)-> Unit){
+        _loading.value = true
+        viewModelScope.launch {
+            try {
+                val result = brandsRepository.uploadCompressedImageUriAndGetURL(byteArray,brandName)
+                if (result.isSuccess){
+                    getUrl(result.getOrNull().toString())
+                    _loading.postValue(false)
+                }else{
+                    _loading.postValue(false)
+                }
+            }catch (e: Exception){
+                _loading.postValue(false)
+            }finally {
+                _loading.postValue(false)
+            }
 
+        }
+    }
+
+    fun uploadCompressedImageUriAndGetURL(
+        byteArray: ByteArray,
+        brandName: String,
+        callBack: (String) -> Unit
+    ) {
+        _loading.value = true
+        viewModelScope.launch {
+            try {
+                val result = brandsRepository.uploadCompressedImageUriAndGetURL(byteArray, brandName)
+                if (result.isSuccess) {
+                    callBack(result.getOrNull().toString())
+                    _loading.postValue(false)
+                }else if (result.isFailure){
+                    Log.d("BrandsViewModel", "uploadCompressedImageUriAndGetURL: ${result.exceptionOrNull()}")
+                    _loading.postValue(false)
+                }
+            } catch (e: Exception) {
+                Log.d("BrandsViewModel", "uploadCompressedImageUriAndGetURL: $e")
+                _loading.postValue(false)
+            } finally {
+                _loading.postValue(false)
+            }
+        }
+    }
 
 
 }
