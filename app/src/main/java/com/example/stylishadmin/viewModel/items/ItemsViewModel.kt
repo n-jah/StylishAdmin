@@ -1,5 +1,6 @@
 package com.example.stylishadmin.viewModel.items
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.stylishadmin.model.items.Item
@@ -94,30 +95,6 @@ class ItemsViewModel(private val itemsRep: ItemsRepositoryInterface): ViewModel(
             }
         }
     }
-    fun addItemsToOnlineDB(item : Item): Result<String>{
-        _loading.value = true
-        var uiResult = Result.failure<String>(Exception("Not yet implemented"))
-        viewModelScope.launch {
-            try {
-                val result = itemsRep.addItem(item)
-                if (result.isSuccess){
-                    _loading.postValue(false)
-                    uiResult = Result.success("Item added successfully")
-                }else{
-                    _loading.postValue(false)
-                    uiResult = Result.failure(Exception("Failed to add item"))
-                }
-            }catch (e: Exception){
-                _loading.postValue(false)
-                uiResult = Result.failure(e)
-            }finally {
-                _loading.postValue(false)
-            }
-        }
-        return  uiResult
-
-    }
-
     fun addItemsToOnlineDB(item: Item, onResult: (Result<String>) -> Unit) {
         _loading.value = true
         viewModelScope.launch {
@@ -125,7 +102,7 @@ class ItemsViewModel(private val itemsRep: ItemsRepositoryInterface): ViewModel(
                 val result = itemsRep.addItem(item)
                 if (result.isSuccess) {
                     _loading.postValue(false)
-                    onResult(Result.success("Item added successfully"))
+                    onResult(Result.success(result.getOrNull().toString()))
                 } else {
                     _loading.postValue(false)
                     onResult(Result.failure(Exception("Failed to add item")))
@@ -185,11 +162,34 @@ class ItemsViewModel(private val itemsRep: ItemsRepositoryInterface): ViewModel(
     }
 
     // upload image uri and back with url
-    fun uploadImagesBackWithUrls(imageUris: List<String>, itemId: String , onResult: (Result<List<String>>) -> Unit) {
+    fun uploadImagesUrisBackWithUrls(imageUris: List<String>, itemId: String , onResult: (Result<List<String>>) -> Unit) {
         _loading.value = true
         viewModelScope.launch {
             try {
-                val result = itemsRep.uploadImagesOfItemBackWithUrls(imageUris,itemId)
+                val result = itemsRep.uploadImagesUrisOfItemBackWithUrls(imageUris,itemId)
+                if (result.isSuccess) {
+                    _loading.postValue(false)
+                    onResult(Result.success(result.getOrNull() ?: emptyList()))
+                    Log.d("ItemsViewModel", "Image URLs: ${result.getOrNull()}")
+                } else {
+                    _loading.postValue(false)
+                    onResult(Result.failure(Exception("Failed to upload image" ) ))
+                }
+
+            }catch (e: Exception) {
+                _loading.postValue(false)
+                onResult(Result.failure(e))
+            }finally {
+                _loading.postValue(false)
+            }
+        }
+    }
+    // upload image compressed and back with url
+    fun uploadImagesBackWithUrls(images: List<ByteArray>, itemId: String , onResult: (Result<List<String>>) -> Unit) {
+        _loading.value = true
+        viewModelScope.launch {
+            try {
+                val result = itemsRep.uploadImagesOfItemBackWithUrls(images,itemId)
                 if (result.isSuccess) {
                     _loading.postValue(false)
                     onResult(Result.success(result.getOrNull() ?: emptyList()))
@@ -259,7 +259,7 @@ class ItemsViewModel(private val itemsRep: ItemsRepositoryInterface): ViewModel(
         _loading.value = true
         viewModelScope.launch {
             try {
-                val uploadResult = itemsRep.uploadImagesOfItemBackWithUrls(imageUris, itemId)
+                val uploadResult = itemsRep.uploadImagesUrisOfItemBackWithUrls(imageUris, itemId)
                 if (uploadResult.isSuccess) {
                     val imageUrls = uploadResult.getOrNull() ?: emptyList()
                     val putResult = itemsRep.putItemImagesURLsInRemoteStorage(imageUrls, itemId)

@@ -1,12 +1,20 @@
 package com.example.stylishadmin.repository.items
 
+import android.content.Context
+import android.net.Uri
 import android.util.Log
+import android.widget.Toast
 import androidx.core.net.toUri
 import com.example.stylishadmin.model.items.Item
+import com.example.stylishadmin.utils.ImageUtils.getResizedAndCompressedBitmap
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 
 class ItemsRepoImp : ItemsRepositoryInterface {
     private val db = Firebase.database
@@ -58,20 +66,46 @@ class ItemsRepoImp : ItemsRepositoryInterface {
             Result.failure(e)
         }
     }
-    override suspend fun addItem(item: Item): Result<Boolean> {
-        val newItemRef = itemsRef.push() // Generates a new unique key
-        val itemId = newItemRef.key ?: return Result.failure(Exception("Failed to generate item ID")) // Ensure key is non-null
-
-        val updatedItem = item.copy(id = itemId)
-
+    override suspend fun addItem(item: Item): Result<Int> {
         return try {
+            // Fetch all existing IDs
+            val itemsSnapshot = itemsRef.get().await()
+            val existingIds = itemsSnapshot.children.mapNotNull { it.key?.toIntOrNull() }.toSet()
+
+            // Generate a unique ID
+            var newId = (existingIds.maxOrNull() ?: 0) + 1
+            while (existingIds.contains(newId)) {
+                newId++ // Increment ID until it's unique
+            }
+
+            // Prepare the item with the unique ID
+            val updatedItem = item.copy(id = newId.toString())
+
+            // Save the item to the database under the unique ID
+            val newItemRef = itemsRef.child(newId.toString())
             newItemRef.setValue(updatedItem).await()
-            Result.success(true)
+
+            // Return success with the new ID
+            Result.success(newId)
         } catch (e: Exception) {
             Result.failure(e)
         }
     }
 
+//    override suspend fun addItem(item: Item): Result<Boolean> {
+//        val newItemRef = itemsRef.push() // Generates a new unique key
+//        val itemId = newItemRef.key ?: return Result.failure(Exception("Failed to generate item ID")) // Ensure key is non-null
+//
+//        val updatedItem = item.copy(id = itemId)
+//
+//        return try {
+//            newItemRef.setValue(updatedItem).await()
+//            Result.succfess(true)
+//        } catch (e: Exception) {
+//            Result.failure(e)
+//        }
+//    }
+//
 
     override suspend fun updateItem(itemId: String, item: Item): Result<Boolean> {
         val itemRef = itemsRef.child(itemId)
@@ -95,7 +129,7 @@ class ItemsRepoImp : ItemsRepositoryInterface {
 
     }
 
-    override suspend fun uploadImagesOfItemBackWithUrls(
+    override suspend fun uploadImagesUrisOfItemBackWithUrls(
         imageUris: List<String>,
         itemId: String
     ): Result<List<String>> {
@@ -103,8 +137,11 @@ class ItemsRepoImp : ItemsRepositoryInterface {
         val storageRef = firebaseStorage.reference
         val uploadedImageUrls = mutableListOf<String>()
 
+
         return try {
             for((index,imageUri) in imageUris.withIndex()){
+
+
                 val imageRef = storageRef.child("items/$itemId/image$index")
                 val uploadTask = imageRef.putFile(imageUri.toUri()).await()
                 val downloadUrl = uploadTask.storage.downloadUrl.await().toString()
@@ -115,6 +152,28 @@ class ItemsRepoImp : ItemsRepositoryInterface {
             Result.failure(e)
 
         }
+    }
+
+    override suspend fun uploadImagesOfItemBackWithUrls(
+        compressedImages: List<ByteArray>,
+        itemId: String
+    ): Result<List<String>> {
+        val firebaseStorage = Firebase.storage
+        val storageRef = firebaseStorage.reference
+        val uploadedImageUrls = mutableListOf<String>()
+        return try {
+            for((index,image) in compressedImages.withIndex()){
+                val imageRef = storageRef.child("items/$itemId/image$index")
+                val uploadTask = imageRef.putBytes(image).await()
+                val downloadUrl = uploadTask.storage.downloadUrl.await().toString()
+                uploadedImageUrls.add(downloadUrl)
+            }
+            Result.success(uploadedImageUrls)
+        }catch (e: Exception){
+            Result.failure(e)
+
+        }
+
     }
 
     override suspend fun putItemImagesURLsInRemoteStorage(

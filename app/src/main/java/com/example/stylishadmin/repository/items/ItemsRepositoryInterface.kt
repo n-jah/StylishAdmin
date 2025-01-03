@@ -10,13 +10,14 @@ interface ItemsRepositoryInterface {
 
     suspend fun getItemsByBrand(brand: String): Result<List<Item>>
     //adding
-    suspend fun addItem(item: Item): Result<Boolean>
+    suspend fun addItem(item: Item): Result<Int>
     //update
     suspend fun updateItem(itemId: String, item: Item): Result<Boolean>
     //remove
     suspend fun deleteItem(itemId: String): Result<Boolean>
     //upload image in certen item and get url
-    suspend fun uploadImagesOfItemBackWithUrls(imageUri: List<String>, itemId: String): Result<List<String>>
+    suspend fun uploadImagesUrisOfItemBackWithUrls(imageUri: List<String>, itemId: String): Result<List<String>>
+    suspend fun uploadImagesOfItemBackWithUrls(compressedImages: List<ByteArray>, itemId: String): Result<List<String>>
     //putItemImages in firebase realtime db
     suspend fun putItemImagesURLsInRemoteStorage(imageUrls: List<String>, itemId: String): Result<Boolean>
     //get spacifec item images

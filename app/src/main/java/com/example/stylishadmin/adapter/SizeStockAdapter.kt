@@ -60,6 +60,10 @@ class SizeStockAdapter(
         notifyDataSetChanged()
     }
 
+    fun getSizes(): List<Size> {
+        return sizes
+    }
+
     // ViewHolder for Add New card
     class AddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val cardAdd: CardView = itemView.findViewById(R.id.add_image_card)

@@ -9,7 +9,7 @@ data class Item(
     val imgUrl: ArrayList<String> = ArrayList(),
     val sizes: List<Size> = listOf(),
     val description: String = "",
-    val id: String = "",
+    var id: String = "",
     val rating: Double = 0.0,
     val brand: String = ""
 ) : Parcelable {

@@ -2,18 +2,17 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
     <!-- Scrollable Content -->
     <androidx.core.widget.NestedScrollView
         android:id="@+id/main_item"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -65,47 +64,47 @@
                     android:layout_height="70dp"
                     android:layout_marginTop="8dp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                >
 
-                <!-- Product Name -->
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="Product Name"
-                    android:textSize="16sp"
-                    android:layout_weight="5"
-                    android:textStyle="bold" />
-                <!-- Category Section -->
-                <Spinner
-                    android:padding="5dp"
-                    android:id="@+id/brand_dropdown_new"
-                    android:layout_width="wrap_content"
+                    android:orientation="horizontal">
+
+                    <!-- Product Name -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:layout_weight="5"
+                        android:text="Product Name"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                    <!-- Category Section -->
+                    <Spinner
+                        android:id="@+id/brand_dropdown_new"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:padding="5dp"
+                        android:spinnerMode="dropdown"
+
+                        />
+                </LinearLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/name_input"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:spinnerMode="dropdown"
+                    android:background="@drawable/default_item_background"
+                    android:hint="@string/enter_the_name">
 
-                    />
-            </LinearLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/description_input"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/product_name_input"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/default_item_background"
-                        android:hint="@string/enter_the_name">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/product_description_input"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="textImeMultiLine"
-                            android:minLines="3" />
-                    </com.google.android.material.textfield.TextInputLayout>
+                        android:inputType="textImeMultiLine"
+                        android:minLines="3" />
+                </com.google.android.material.textfield.TextInputLayout>
 
 
                 <!-- Description -->
@@ -187,4 +186,14 @@
                 app:layout_constraintTop_toBottomOf="@id/linearLayout2" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/contentLoadingProgressBar"
+        android:layout_width="wrap_content"
+
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/main_item" />
 </androidx.constraintlayout.widget.ConstraintLayout>

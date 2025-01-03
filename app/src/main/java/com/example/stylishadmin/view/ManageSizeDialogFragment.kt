@@ -127,9 +127,8 @@ class ManageSizeDialogFragment : DialogFragment() {
         // Bind the RecyclerView to the adapter and layout manager
         val rv =binding.recyclerViewSizes
 
-
             rv.adapter = this@ManageSizeDialogFragment.adapter
-            rv.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            rv.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             rv.setHasFixedSize(true)
 
 
@@ -164,10 +163,13 @@ class ManageSizeDialogFragment : DialogFragment() {
             }
         }
     }
-
     private fun notifySizeChanged(size: Size) {
         val position = sizeStockList.indexOf(size)
-        adapter.notifyItemChanged(position)
+        if (position != -1) {
+            binding.recyclerViewSizes.post {
+                adapter.notifyItemChanged(position)
+            }
+        }
     }
 
     override fun onDestroyView() {
@@ -189,8 +191,6 @@ class ManageSizeDialogFragment : DialogFragment() {
     fun setManageSizeDialogListener(listener: ManageSizeDialogListener) {
         this.listener = listener
     }
-
-
 
 
 }

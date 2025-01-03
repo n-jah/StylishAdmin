@@ -39,4 +39,29 @@ object ImageUtils {
 
         return byteArrayOutputStream.toByteArray()
     }
+    fun decodeUriToBitmap(context: Context, imageUri: Uri): Bitmap? {
+        val inputStream = context.contentResolver.openInputStream(imageUri)
+        return BitmapFactory.decodeStream(inputStream)
+    }
+    fun resizeBitmap(bitmap: Bitmap, maxWidth: Int, maxHeight: Int): Bitmap {
+        val aspectRatio = bitmap.width.toFloat() / bitmap.height.toFloat()
+        val width = if (bitmap.width > bitmap.height) maxWidth else (maxHeight * aspectRatio).toInt()
+        val height = if (bitmap.height > bitmap.width) maxHeight else (maxWidth / aspectRatio).toInt()
+
+        return Bitmap.createScaledBitmap(bitmap, width, height, true)
+    }
+    fun compressBitmap(bitmap: Bitmap, quality: Int = 80): ByteArray {
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, quality, byteArrayOutputStream)
+        return byteArrayOutputStream.toByteArray()
+    }
+    fun getFileSizeFromUri(context: Context, imageUri: Uri): Long {
+        val inputStream = context.contentResolver.openInputStream(imageUri)
+        return inputStream?.available()?.toLong() ?: 0L
+    }
+    fun shouldCompressImage(imageUri: Uri, context: Context, maxSize: Long): Boolean {
+        val fileSize = getFileSizeFromUri(context, imageUri)
+        return fileSize > maxSize
+    }
+
 }

@@ -48,16 +48,15 @@ class SizeAdapter(
 
 
                 btnIncrease.setOnClickListener {
-                    onIncreaseClick(item) // Handle increase
-                    ETQuantity.setText(item.stock.toString()) // Update stock UI
-                    notifyItemChanged(adapterPosition) // Notify of update
+                    onIncreaseClick(item) // Update the data
+                    ETQuantity.setText(item.stock.toString()) // Update the UI directly
                 }
 
                 btnDecrease.setOnClickListener {
-                    onDecreaseClick(item) // Handle decrease
-                    ETQuantity.setText(item.stock.toString()) // Update stock UI
-                    notifyItemChanged(adapterPosition) // Notify of update
+                    onDecreaseClick(item) // Update the data
+                    ETQuantity.setText(item.stock.toString()) // Update the UI directly
                 }
+
 
                 btnDelete.setOnClickListener {
                     onDeleteClick(item) // Handle deletion
