@@ -144,8 +144,9 @@ class ItemsViewModel(private val itemsRep: ItemsRepositoryInterface): ViewModel(
 
         viewModelScope.launch {
             try {
-                val result = itemsRep.deleteItem(itemId)
-                if (result.isSuccess) {
+                val deleteFromRealtimeDBResult = itemsRep.deleteItem(itemId)
+                val deleteFromStorageDBResult = itemsRep.deleteItemImagesFromStorage(itemId)
+                if (deleteFromRealtimeDBResult.isSuccess && deleteFromStorageDBResult.isSuccess) {
                     _loading.postValue(false)
                     onResult(Result.success("Item deleted successfully"))
                 } else {
@@ -304,6 +305,27 @@ class ItemsViewModel(private val itemsRep: ItemsRepositoryInterface): ViewModel(
                 onResult(Result.failure(e))
             }finally {
                 _loading.postValue(false)
+            }
+        }
+    }
+
+    fun deleteItemImageFromStorage(imageUrl: String, onResult: (Result<String>) -> Unit) {
+        _loading.postValue(true) // Use postValue for thread safety
+        viewModelScope.launch {
+            try {
+                val result = itemsRep.deleteItemImageFromStorage(imageUrl)
+                if (result.isSuccess) {
+                    _loading.postValue(false) // Use postValue for thread safety
+                    onResult(Result.success("Image deleted successfully"))
+                } else {
+                    _loading.postValue(false) // Use postValue for thread safety
+                    onResult(Result.failure(Exception("Failed to delete image")))
+                }
+            } catch (e: Exception) {
+                _loading.postValue(false) // Use postValue for thread safety
+                onResult(Result.failure(e))
+            } finally {
+                _loading.postValue(false) // Use postValue for thread safety
             }
         }
     }

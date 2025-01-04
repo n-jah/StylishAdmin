@@ -25,4 +25,6 @@ interface ItemsRepositoryInterface {
     suspend fun getItemsStatistics(): Result<Map<String,Int>>
 
 
+    suspend fun deleteItemImagesFromStorage(itemId: String): Result<Boolean>
+    suspend fun deleteItemImageFromStorage(imageUrl: String): Result<Boolean>
 }

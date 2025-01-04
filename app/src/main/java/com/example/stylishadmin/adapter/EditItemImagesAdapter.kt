@@ -1,22 +1,19 @@
 package com.example.stylishadmin.adapter
 
-import android.content.Context
-import android.graphics.BitmapFactory
-import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.Toast
-import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.stylishadmin.R
 
-class EditItemImagesAdapter (   private val images: MutableList<String>, // List of image URLs
-                                private val onAddClick: () -> Unit,     // Callback for Add button
-                                private val onRemoveImageClick: (String) -> Unit // Callback for image clicks
+class EditItemImagesAdapter(
+    private val images: MutableList<String>, // List of image URLs
+    private val onAddClick: () -> Unit,     // Callback for Add button
+    private val onRemoveImageClick: (String) -> Unit // Callback for image clicks
 
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -41,17 +38,18 @@ class EditItemImagesAdapter (   private val images: MutableList<String>, // List
         }
     }
 
-
-
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is AddViewHolder) {
             holder.bind(onAddClick)
-
         } else if (holder is ImageViewHolder) {
-            val imageUrl = images[position - 1] // Offset by 1 for Add button
-            holder.bind(imageUrl.toString(), onRemoveImageClick)
-
-
+            // Check if the list is not empty and the position is valid
+            if (images.isNotEmpty() && position - 1 < images.size) {
+                val imageUrl = images[position - 1] // Offset by 1 for Add button
+                holder.bind(imageUrl.toString(), onRemoveImageClick)
+            } else {
+                // Handle the case where the list is empty or the position is invalid
+                Log.e("EditItemImagesAdapter", "List is empty or position is invalid")
+            }
         }
     }
 
@@ -59,8 +57,6 @@ class EditItemImagesAdapter (   private val images: MutableList<String>, // List
 
     // ViewHolder for Add Button
     class AddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-
         fun bind(onAddClick: () -> Unit) {
             itemView.setOnClickListener { onAddClick() }
         }
@@ -73,30 +69,22 @@ class EditItemImagesAdapter (   private val images: MutableList<String>, // List
 
 
         fun bind(imageUrl: String, onRemoveImageClick: (String) -> Unit) {
-             Glide.with(itemView.context).load(imageUrl).apply(
-                 RequestOptions()
-                     .override(400, 400) // Resize the image to 400x400 pixels
-                     .centerCrop()       // Crop the image to fit the dimensions
-             ).into(imageView)
-
+            Glide.with(itemView.context).load(imageUrl).apply(
+                RequestOptions()
+                    .override(400, 400) // Resize the image to 400x400 pixels
+                    .centerCrop()       // Crop the image to fit the dimensions
+            ).into(imageView)
             removeImage.setOnClickListener { onRemoveImageClick(imageUrl) }
-
         }
-
-
     }
 
     fun addImage(image: String) {
-        //add the image in first
-
-        images.add(0, image)
-        notifyDataSetChanged()
-
+        images.add(0, image) // Add the image at the beginning
+        notifyItemInserted(1) // Notify adapter of the new item at position 1
     }
 
     fun removeImage(image: String) {
         images.remove(image)
         notifyDataSetChanged()
-
     }
 }

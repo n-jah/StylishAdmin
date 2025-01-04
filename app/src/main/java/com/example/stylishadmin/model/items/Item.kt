@@ -6,7 +6,7 @@ import android.os.Parcelable
 data class Item(
     val title: String = "",
     val price: Double = 0.0,
-    val imgUrl: ArrayList<String> = ArrayList(),
+    var imgUrl: ArrayList<String> = ArrayList(),
     val sizes: List<Size> = listOf(),
     val description: String = "",
     var id: String = "",

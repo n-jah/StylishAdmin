@@ -9,6 +9,7 @@ import com.example.stylishadmin.model.items.Item
 import com.example.stylishadmin.utils.ImageUtils.getResizedAndCompressedBitmap
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -120,6 +121,7 @@ class ItemsRepoImp : ItemsRepositoryInterface {
     }
     override suspend fun deleteItem(itemId: String): Result<Boolean> {
         val itemRef = itemsRef.child(itemId)
+
         return try {
             itemRef.removeValue().await()
             Result.success(true)
@@ -213,11 +215,53 @@ class ItemsRepoImp : ItemsRepositoryInterface {
             val snapshot = itemsRef.get().await()
             val items = snapshot.children.mapNotNull { it.getValue(Item::class.java) }
             val statistics = items.groupingBy { it.brand }.eachCount()
-            Log.d("ItemsRepoImp", "Statistics: $statistics")
             Result.success(statistics)
         } catch (e: Exception) {
             Result.failure(e)
         }
+
+    }
+
+    //delete item images from the storage by the id
+    override suspend fun deleteItemImagesFromStorage(itemId: String): Result<Boolean> {
+        val firebaseStorage = Firebase.storage
+        val storageRef = firebaseStorage.reference
+        val itemRef = storageRef.child("items/$itemId")
+
+        return try {
+            // List all files under the folder
+            val files = itemRef.listAll().await()
+
+            // Delete all files within the folder
+            files.items.forEach { file ->
+                file.delete().await()
+                Log.d("ItemsRepoImp", "Deleted file: ${file.path}")
+            }
+
+            // Ensure the folder itself is "deleted" (it's virtual, so removing its contents suffices)
+            Log.d("ItemsRepoImp", "Folder items/$itemId cleared successfully")
+
+            // Remove the corresponding entry from the database
+            itemsRef.child(itemId).removeValue().await()
+            Log.d("ItemsRepoImp", "Item entry removed from database")
+
+            Result.success(true)
+        } catch (e: Exception) {
+            Log.d("ItemsRepoImp", "Failed to delete item images: ${e.message}")
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun deleteItemImageFromStorage(imageUrl: String): Result<Boolean> {
+
+        val storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(imageUrl)
+        return try {
+            storageRef.delete().await()
+            Result.success(true)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+
 
     }
 
