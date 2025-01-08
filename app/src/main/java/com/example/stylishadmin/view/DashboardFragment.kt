@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.stylishadmin.adapter.DashboardOrdersAdapter
 import com.example.stylishadmin.databinding.FragmentDashboardBinding
@@ -68,7 +69,6 @@ class DashboardFragment : Fragment() {
         brandsStatistics()
         ordersStatistics()
         //topPart statistics
-
         binding.swipfreshlayout.setOnRefreshListener {
             refreshData()
         }
@@ -163,7 +163,7 @@ class DashboardFragment : Fragment() {
                 val itemsData = items.getOrNull()
                 if (itemsData != null) {
                     setupPieChart(binding.itemsPieChart, itemsData)
-                    totalBrands = itemsData.size
+                    totalBrands =  itemsData.values.sum()
                     binding.totalBrandsTv.text = totalBrands.toString()
                 }
             }

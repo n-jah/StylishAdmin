@@ -176,14 +176,14 @@ class NewItemFragment : Fragment(),ManageSizeDialogListener {
 
                 addUrlsToItem(newItem, it.getOrNull().toString()) { updatedItem->
                     Log.d("NewItemFragment","the updated item${updatedItem}")
-                        itemsViewModel.updateItem(updatedItem.id, updatedItem) { reslut->
-                            if (reslut.isSuccess){
-                                Toast.makeText(requireContext(),reslut.getOrNull().toString(),Toast.LENGTH_SHORT).show()
-                                //CLOSE THE FRAGMENT
-                                requireActivity().onBackPressedDispatcher.onBackPressed()
+                    itemsViewModel.updateItem(updatedItem.id, updatedItem) { reslut->
+                        if (reslut.isSuccess){
+                            Toast.makeText(requireContext(),reslut.getOrNull().toString(),Toast.LENGTH_SHORT).show()
+                            //CLOSE THE FRAGMENT
+                            requireActivity().onBackPressedDispatcher.onBackPressed()
 
-                            }
                         }
+                    }
                     Log.d("NewItemFragment", "updated Item: $updatedItem")
                 }
                 Toast.makeText(requireContext(), "Item added successfully the id : ${it.getOrNull().toString()}", Toast.LENGTH_SHORT).show()
@@ -250,12 +250,12 @@ class NewItemFragment : Fragment(),ManageSizeDialogListener {
 
 
         sizesAdapter = SizeStockAdapter(sizes,
-         onEditClick = {
-             Toast.makeText(requireContext(),"addNewSize", Toast.LENGTH_SHORT ).show()
+            onEditClick = {
+                Toast.makeText(requireContext(),"addNewSize", Toast.LENGTH_SHORT ).show()
 
-             val dialog = ManageSizeDialogFragment.newInstance(sizes)
-             dialog.setManageSizeDialogListener(this) // Set the listener
-             dialog.show(childFragmentManager, "ManageSizeDialogFragment")
+                val dialog = ManageSizeDialogFragment.newInstance(sizes)
+                dialog.setManageSizeDialogListener(this) // Set the listener
+                dialog.show(childFragmentManager, "ManageSizeDialogFragment")
 
             }
         )

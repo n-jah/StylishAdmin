@@ -1,22 +1,20 @@
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="5dp"
-    >
+    android:padding="5dp">
 
 
     <HorizontalScrollView
         android:id="@+id/horizontalScrollView2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:background="@android:color/transparent"
-        android:scrollbars="none"
-
         android:layout_marginTop="20dp"
+        android:background="@android:color/transparent"
+        android:padding="10dp"
+
+        android:scrollbars="none"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -36,19 +34,19 @@
                 android:background="@drawable/card_bg"
                 android:orientation="vertical"
                 android:padding="16dp">
+
                 <TextView
-                    android:textStyle="bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Total Products"
                     android:textColor="@android:color/black"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    >
+                    android:orientation="horizontal">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -57,13 +55,13 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/total_products_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="500"
                             android:textColor="@android:color/holo_green_dark"
                             android:textSize="18sp"
-                            android:id="@+id/total_products_tv"
                             android:textStyle="bold" />
 
                         <TextView
@@ -82,13 +80,13 @@
                         android:layout_height="40dp"
                         android:layout_gravity="end"
                         android:layout_weight="1"
-                        android:src="@drawable/total_products"
-                        />
+                        android:src="@drawable/total_products" />
 
                 </LinearLayout>
 
 
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -96,29 +94,30 @@
                 android:background="@drawable/card_bg"
                 android:orientation="vertical"
                 android:padding="16dp">
+
                 <TextView
-                    android:textStyle="bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Total Customers"
                     android:textColor="@android:color/black"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    >
+                    android:orientation="horizontal">
+
                     <TextView
+                        android:id="@+id/total_customers_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="500"
                         android:layout_gravity="center_vertical"
                         android:layout_marginEnd="20dp"
+                        android:layout_weight="1"
+                        android:text="500"
                         android:textColor="@android:color/holo_green_dark"
                         android:textSize="18sp"
-                        android:id="@+id/total_customers_tv"
                         android:textStyle="bold" />
 
                     <ImageView
@@ -126,14 +125,14 @@
                         android:layout_height="40dp"
                         android:layout_gravity="end"
                         android:layout_weight="1"
-                        android:src="@drawable/users_svgrepo_com"
-                        />
+                        android:src="@drawable/users_svgrepo_com" />
 
 
                 </LinearLayout>
 
 
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -141,30 +140,31 @@
                 android:background="@drawable/card_bg"
                 android:orientation="vertical"
                 android:padding="16dp">
+
                 <TextView
-                    android:textStyle="bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Total Brands"
                     android:textColor="@android:color/black"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    >
+                    android:orientation="horizontal">
+
                     <TextView
 
+                        android:id="@+id/total_brands_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="500"
                         android:layout_gravity="center_vertical"
                         android:layout_marginEnd="20dp"
+                        android:layout_weight="1"
+                        android:text="500"
                         android:textColor="@android:color/holo_green_dark"
                         android:textSize="18sp"
-                        android:id="@+id/total_brands_tv"
                         android:textStyle="bold" />
 
                     <ImageView
@@ -172,8 +172,7 @@
                         android:layout_height="40dp"
                         android:layout_gravity="end"
                         android:layout_weight="1"
-                        android:src="@drawable/brands_icon"
-                        />
+                        android:src="@drawable/brands_icon" />
 
 
                 </LinearLayout>
@@ -184,30 +183,32 @@
         </LinearLayout>
 
     </HorizontalScrollView>
+
     <View
+        android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@android:color/darker_gray"
-        app:layout_constraintTop_toBottomOf="@id/horizontalScrollView2"
-        app:layout_constraintBottom_toTopOf="@id/chartSection"
-        android:layout_marginBottom="10dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintBottom_toTopOf="@id/chartSection"
 
-        />
+        app:layout_constraintTop_toBottomOf="@id/horizontalScrollView2" />
 
     <!-- Chart Section -->
     <LinearLayout
         android:id="@+id/chartSection"
         android:layout_width="match_parent"
         android:layout_height="200dp"
+        android:layout_margin="10dp"
         android:background="@drawable/card_bg"
         android:orientation="horizontal"
-        android:layout_margin="10dp"
-        app:layout_constraintTop_toBottomOf="@id/horizontalScrollView2"
         app:layout_constraintBottom_toTopOf="@id/recentOrdersLabel"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/horizontalScrollView2">
+
         <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/ordersPieChart"
             android:layout_width="0dp"
@@ -215,8 +216,7 @@
             android:layout_margin="6dp"
             android:layout_weight="1"
 
-            android:background="@drawable/card_bg"
-            />
+            android:background="@drawable/card_bg" />
 
         <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/itemsPieChart"
@@ -224,55 +224,70 @@
             android:layout_height="match_parent"
             android:layout_margin="6dp"
             android:layout_weight="1"
-            android:background="@drawable/card_bg"
-            />
+            android:background="@drawable/card_bg" />
     </LinearLayout>
+
     <View
+        android:id="@+id/view2"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@android:color/darker_gray"
-        app:layout_constraintTop_toBottomOf="@id/chartSection"
-        app:layout_constraintBottom_toTopOf="@id/recentOrdersLabel"
-        android:layout_marginBottom="10dp"
         android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
         android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintBottom_toTopOf="@id/recentOrdersLabel"
 
-        />
+        app:layout_constraintTop_toBottomOf="@id/chartSection" />
 
     <!-- Recent Orders -->
 
 
-    <TextView
+    <LinearLayout
         android:id="@+id/recentOrdersLabel"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:paddingStart="16dp"
-        android:text="Recent Orders"
-        android:textSize="18sp"
-        android:textStyle="bold"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/chartSection" />
+        app:layout_constraintTop_toBottomOf="@id/chartSection">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:paddingStart="16dp"
+            android:text="Recent Orders"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_weight="3"
+            />
+
+
+    </LinearLayout>
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipfreshlayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:id="@+id/swipfreshlayout"
-        app:layout_constraintTop_toBottomOf="@id/recentOrdersLabel"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recentOrdersLabel"
 
         >
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recentOrdersList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            tools:listitem="@layout/rv_order_home_recent"
+            android:clipToPadding="false"
             android:padding="10dp"
-            android:clipToPadding="false" />
+            tools:listitem="@layout/rv_order_home_recent" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/emptyAnimation"
         android:layout_width="wrap_content"
@@ -290,11 +305,11 @@
         app:lottie_speed=".6" />
 
     <ProgressBar
+        android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
 
-        android:id="@+id/progressBar"
+        android:layout_gravity="center"
         android:layout_marginTop="20dp"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"

@@ -104,38 +104,27 @@
             }
         }
 
-        private fun setInfoToUI(item: Item) {
+    private fun setInfoToUI(item: Item) {
+        binding.itemNameInputText.setText(item.title)
+        binding.priceInputText.setText(item.price.toString())
+        binding.productDescription.setText(item.description)
+        currentItemImagesUrls.addAll(item.imgUrl)
+        setupBrandSpinner(item.brand)
+        setUpRVSizeAndImages(item)
+    }
 
-            // Pre-fill item details
-            binding.itemNameInputText.setText(item.title)
-            binding.priceInputText.setText(item.price.toString())
-            binding.productDescription.setText(item.description)
-            currentItemImagesUrls.addAll(item.imgUrl)
-            // Setup Brand Spinner
-            setupBrandSpinner(item.brand)
+    private fun setupViewModels() {
+        val itemsViewModelFactory = ItemsViewModelFactory(ItemsRepoImp())
+        itemsViewModel = ViewModelProvider(requireActivity(), itemsViewModelFactory)[ItemsViewModel::class.java]
+        val brandsViewModelFactory = BrandsViewModelFactory(BrandsRepoImpl())
+        brandsViewModel = ViewModelProvider(requireActivity(), brandsViewModelFactory)[BrandsViewModel::class.java]
+        brandsViewModel.getBrands()
+    }
 
-            // Setup RecyclerViews for sizes and images
-            setUpRVSizeAndImages(item)
-
-        }
-
-        private fun setupViewModels() {
-            val itemsViewModelFactory = ItemsViewModelFactory(ItemsRepoImp())
-            itemsViewModel =
-                ViewModelProvider(requireActivity(), itemsViewModelFactory)[ItemsViewModel::class.java]
-            val brandsViewModelFactory = BrandsViewModelFactory(BrandsRepoImpl())
-            brandsViewModel = ViewModelProvider(
-                requireActivity(),
-                brandsViewModelFactory
-            )[BrandsViewModel::class.java]
-            brandsViewModel.getBrands()
-
-        }
-
-        private fun setUpRVSizeAndImages(item: Item) {
-            setupSizes(item)
-            setupImages(item)
-        }
+    private fun setUpRVSizeAndImages(item: Item) {
+        setupSizes(item)
+        setupImages(item)
+    }
 
         private fun setupImages(item: Item) {
             val itemImages = item.imgUrl.toMutableList()
@@ -201,11 +190,15 @@
                 sizes = sizes
             )
 
-            // Delete all deleted images from storage
-            deleteImagesFromStorage(deletedImageUrls)
+         // Show loading indicator
+         setupLoading(true)
+
+        // Delete all deleted images from storage
+        deleteImagesFromStorage(deletedImageUrls)
 
             // Upload new images and update the item
             addUrlsToItem(updatedItem) { afterUpdatedItem ->
+                setupLoading(false)
 
                 itemsViewModel.updateItem(item.id, afterUpdatedItem){
                     if (it.isSuccess){
@@ -310,6 +303,9 @@
         ) {
             val compressImages: MutableList<ByteArray> = mutableListOf()
             //check if image bigger than 2 MB
+                // Show loading indicator
+        setupLoading(true)
+
             CoroutineScope(Dispatchers.IO).launch {
                 itemsImagesUris.forEach { uri ->
                     //compretion

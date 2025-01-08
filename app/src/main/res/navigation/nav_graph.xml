@@ -1,15 +1,26 @@
-<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:startDestination="@id/dashboardFragment">
     <fragment
         android:id="@+id/dashboardFragment"
         android:name="com.example.stylishadmin.view.DashboardFragment"
-        android:label="Dashboard" />
+        android:label="Dashboard" >
+        <!-- Action to navigate to OrdersFragment -->
+        <action
+            android:id="@+id/action_dashboardFragment_to_ordersFragment"
+            app:destination="@id/ordersFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/ordersFragment"
         android:name="com.example.stylishadmin.view.OrdersFragment"
-        android:label="Orders" />
+        android:label="Orders" >
+        <action
+            android:id="@+id/action_ordersFragment_to_dashboardFragment"
+            app:destination="@id/dashboardFragment"
+            app:popUpTo="@id/dashboardFragment"
+            app:popUpToInclusive="false" />
+    </fragment>
     <fragment
         android:id="@+id/myStoreFragment"
         android:name="com.example.stylishadmin.view.StoreFragment"
