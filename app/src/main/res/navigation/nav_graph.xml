@@ -1,0 +1,52 @@
+    <navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:startDestination="@id/dashboardFragment">
+    <fragment
+        android:id="@+id/dashboardFragment"
+        android:name="com.example.stylishadmin.view.DashboardFragment"
+        android:label="Dashboard" >
+        <!-- Action to navigate to OrdersFragment -->
+        <action
+            android:id="@+id/action_dashboardFragment_to_ordersFragment"
+            app:destination="@id/ordersFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/ordersFragment"
+        android:name="com.example.stylishadmin.view.OrdersFragment"
+        android:label="Orders" >
+        <action
+            android:id="@+id/action_ordersFragment_to_dashboardFragment"
+            app:destination="@id/dashboardFragment"
+            app:popUpTo="@id/dashboardFragment"
+            app:popUpToInclusive="false" />
+    </fragment>
+    <fragment
+        android:id="@+id/myStoreFragment"
+        android:name="com.example.stylishadmin.view.StoreFragment"
+        android:label="My Store" >
+        <action
+            android:id="@+id/action_myStoreFragment_to_addItemFragment"
+            app:destination="@id/addItemFragment" />
+        <action
+            android:id="@+id/action_myStoreFragment_to_editItemFragment"
+            app:destination="@id/editItemFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addItemFragment"
+        android:name="com.example.stylishadmin.view.NewItemFragment"
+        android:label="Add Item"
+
+        />
+    <fragment
+        android:id="@+id/editItemFragment"
+        android:name="com.example.stylishadmin.view.EditItemFragment">
+    <argument
+        android:name="itemData"
+        app:argType="com.example.stylishadmin.model.items.Item" />
+    </fragment>
+
+
+
+
+</navigation>
