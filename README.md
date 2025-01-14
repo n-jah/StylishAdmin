@@ -1,7 +1,3 @@
-Got it! I'll remove the **dark mode** and **user role management** features, update the repository link, and refine the README accordingly. Here's the updated version:
-
----
-
 # Stylish Admin App 🖥️
 
 <div align="left"> 
@@ -111,8 +107,8 @@ Got it! I'll remove the **dark mode** and **user role management** features, upd
 
 ---
 
-<a name="quick-start"></a>
 ## Quick Start 🚀  
+<a name="quick-start"></a>
 
 1. Clone the repository:  
    ```bash
@@ -221,5 +217,3 @@ Feel free to reach out to me for questions, collaborations, or feedback!
 Enjoy using Stylish Admin App! ✨🎉  
 
 --- 
-
-This updated README now reflects the correct repository link (`https://github.com/n-jah/StylishAdmin`) and removes references to **dark mode** and **user role management**. Let me know if you need further adjustments! 😊
