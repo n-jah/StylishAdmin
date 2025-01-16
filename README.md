@@ -1,7 +1,7 @@
 # Stylish Admin App 🖥️
 
 <div align="left"> 
-  <img src="https://raw.githubusercontent.com/n-jah/Stylish-E-commerce/testBrand/media/stylishlogo.jpg" width="100" alt="Stylish Logo" /> 
+  <img src="https://raw.githubusercontent.com/n-jah/StylishAdmin/master/media/admin.png" width="100" alt="Stylish Logo" /> 
 </div>
 
 **Stylish Admin App** is a powerful and intuitive Android application designed for **e-commerce administrators** to manage brands, items, orders, and users. Built using **Kotlin** and following the **MVVM architecture**, the app integrates seamlessly with **Firebase** for real-time data management. Whether you're managing inventory, tracking orders, or analyzing sales, Stylish Admin App provides a **reliable and efficient solution**. ✨
@@ -33,19 +33,23 @@
 <a name="app-demos"></a>
 ## App Demos 🎥
 
-### Brand Management 🏷️
+
+### Home 🏠,Recent orders and Brand Management 🏷️
 <div align="center">
-  <img src="https://raw.githubusercontent.com/n-jah/Stylish-E-commerce/testBrand/media/brand_management.gif" width="200" alt="Brand Management" />
+  <img src="https://raw.githubusercontent.com/n-jah/StylishAdmin/master/media/HOME%20(1).gif" width="200" alt="Home" />
+  <img src="https://raw.githubusercontent.com/n-jah/StylishAdmin/master/media/MANAGEBRANDS.gif" width="200" alt="Brand Management" />  
 </div>
 
-### Item Management 🛍️
+### Store Screen and Item Management 🛍️
 <div align="center">
-  <img src="https://raw.githubusercontent.com/n-jah/Stylish-E-commerce/testBrand/media/item_management.gif" width="200" alt="Item Management" />
+  <img src="https://raw.githubusercontent.com/n-jah/StylishAdmin/master/media/STORESCREEN.gif" width="200" alt="Store Screen" />  
+    <img src="https://raw.githubusercontent.com/n-jah/StylishAdmin/master/media/ADDNEWITEM.gif" width="200" alt="Add item" />  
+  <img src="https://raw.githubusercontent.com/n-jah/StylishAdmin/master/media/EDITITEM.gif" width="200" alt="edit item" />  
 </div>
 
 ### Order Management 📦
 <div align="center">
-  <img src="https://raw.githubusercontent.com/n-jah/Stylish-E-commerce/testBrand/media/order_management.gif" width="200" alt="Order Management" />
+  <img src="https://raw.githubusercontent.com/n-jah/StylishAdmin/master/media/ORDERANDSEARCHSWITCHTOONDELIVERY.gif" width="250" alt="order mangement" />  
 </div>
 
 ---
