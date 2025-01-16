@@ -51,15 +51,12 @@
 <div align="center">
   <img src="https://raw.githubusercontent.com/n-jah/StylishAdmin/master/media/ORDERANDSEARCHSWITCHTOONDELIVERY.gif" width="250" alt="order mangement" />  
 </div>
-
----
-
 ---
 
 <a name="apk-download"></a>
 ## APK Download 📲  
-[Download Admin Stylish APK](https://github.com/n-jah/Stylish-E-commerce/blob/testBrand/app/release/app-release.apk)
-https://raw.githubusercontent.com/n-jah/StylishAdmin/master/media/MANAGEBRANDS.gif
+[Download Admin Stylish APK](https://raw.githubusercontent.com/n-jah/StylishAdmin/master/app/release/app-release.apk)
+
 ---
 
 
