@@ -54,6 +54,15 @@
 
 ---
 
+---
+
+<a name="apk-download"></a>
+## APK Download 📲  
+[Download Admin Stylish APK](https://github.com/n-jah/Stylish-E-commerce/blob/testBrand/app/release/app-release.apk)
+https://raw.githubusercontent.com/n-jah/StylishAdmin/master/media/MANAGEBRANDS.gif
+---
+
+
 <a name="features"></a>
 ## Features 🚀
 
