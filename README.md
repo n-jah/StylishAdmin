@@ -1,3 +1,4 @@
+
 # Stylish Admin App 🖥️
 
 <div align="left"> 
@@ -33,8 +34,7 @@
 <a name="app-demos"></a>
 ## App Demos 🎥
 
-
-### Home 🏠,Recent orders and Brand Management 🏷️
+### Home 🏠, Recent Orders, and Brand Management 🏷️
 <div align="center">
   <img src="https://raw.githubusercontent.com/n-jah/StylishAdmin/master/media/HOME%20(1).gif" width="200" alt="Home" />
   <img src="https://raw.githubusercontent.com/n-jah/StylishAdmin/master/media/MANAGEBRANDS.gif" width="200" alt="Brand Management" />  
@@ -43,14 +43,15 @@
 ### Store Screen and Item Management 🛍️
 <div align="center">
   <img src="https://raw.githubusercontent.com/n-jah/StylishAdmin/master/media/STORESCREEN.gif" width="200" alt="Store Screen" />  
-    <img src="https://raw.githubusercontent.com/n-jah/StylishAdmin/master/media/ADDNEWITEM.gif" width="200" alt="Add item" />  
-  <img src="https://raw.githubusercontent.com/n-jah/StylishAdmin/master/media/EDITITEM.gif" width="200" alt="edit item" />  
+  <img src="https://raw.githubusercontent.com/n-jah/StylishAdmin/master/media/ADDNEWITEM.gif" width="200" alt="Add item" />  
+  <img src="https://raw.githubusercontent.com/n-jah/StylishAdmin/master/media/EDITITEM.gif" width="200" alt="Edit item" />  
 </div>
 
 ### Order Management 📦
 <div align="center">
-  <img src="https://raw.githubusercontent.com/n-jah/StylishAdmin/master/media/ORDERANDSEARCHSWITCHTOONDELIVERY.gif" width="250" alt="order mangement" />  
+  <img src="https://raw.githubusercontent.com/n-jah/StylishAdmin/master/media/ORDERANDSEARCHSWITCHTOONDELIVERY.gif" width="250" alt="Order Management" />  
 </div>
+
 ---
 
 <a name="apk-download"></a>
@@ -58,7 +59,6 @@
 [Download Admin Stylish APK](https://raw.githubusercontent.com/n-jah/StylishAdmin/master/app/release/app-release.apk)
 
 ---
-
 
 <a name="features"></a>
 ## Features 🚀
@@ -117,8 +117,8 @@
 
 ---
 
-## Quick Start 🚀  
 <a name="quick-start"></a>
+## Quick Start 🚀  
 
 1. Clone the repository:  
    ```bash
@@ -154,6 +154,13 @@ stylish-admin/
 ├── README.md
 └── build.gradle
 ```
+
+---
+
+## Client Stylish App 🖥️  
+
+I also created a **Client Version** of Stylish:  
+[Client Stylish App](https://github.com/n-jah/Stylish-E-commerce)  
 
 ---
 
@@ -225,5 +232,3 @@ Feel free to reach out to me for questions, collaborations, or feedback!
 ---
 
 Enjoy using Stylish Admin App! ✨🎉  
-
---- 
